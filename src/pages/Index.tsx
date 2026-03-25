@@ -1,6 +1,6 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Shield, Clock, MapPin, CreditCard, ChevronRight, Bus, Navigation } from 'lucide-react';
+import { Shield, Clock, MapPin, CreditCard, ChevronRight, Bus, Navigation, Ticket } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AnimatedHero from '@/components/AnimatedHero';
