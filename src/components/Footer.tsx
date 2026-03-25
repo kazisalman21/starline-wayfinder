@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
-import { Bus, Phone, Mail, MapPin } from 'lucide-react';
+import { Phone, Mail, MapPin } from 'lucide-react';
+import starlineLogo from '@/assets/starline-logo.png';
 
 export default function Footer() {
   return (
