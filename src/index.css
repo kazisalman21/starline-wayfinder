@@ -154,4 +154,73 @@
   .section-spacing {
     @apply py-20 md:py-28;
   }
+
+  /* Traveler idle breathing animation */
+  .traveler-idle {
+    animation: traveler-breathe 4s ease-in-out infinite, traveler-sway 6s ease-in-out infinite;
+  }
+
+  /* Lamppost ambient glow */
+  .lamppost-glow {
+    position: absolute;
+    right: 38%;
+    top: 15%;
+    width: 200px;
+    height: 400px;
+    background: radial-gradient(ellipse at center, hsl(42 85% 52% / 0.12) 0%, transparent 70%);
+    animation: glow-pulse 3s ease-in-out infinite;
+    pointer-events: none;
+  }
+
+  /* Fog drift effect */
+  .fog-drift {
+    position: absolute;
+    bottom: 10%;
+    left: -10%;
+    width: 120%;
+    height: 30%;
+    background: linear-gradient(90deg, transparent, hsl(220 20% 30% / 0.06), hsl(220 20% 30% / 0.08), hsl(220 20% 30% / 0.04), transparent);
+    animation: fog-move 12s linear infinite;
+    pointer-events: none;
+  }
+
+  /* Bus headlight bloom */
+  .headlight-bloom {
+    position: absolute;
+    right: 28%;
+    bottom: 22%;
+    width: 180px;
+    height: 100px;
+    background: radial-gradient(ellipse at center, hsl(40 70% 70% / 0.1) 0%, transparent 70%);
+    animation: headlight-flicker 5s ease-in-out infinite;
+    pointer-events: none;
+  }
+}
+
+@keyframes traveler-breathe {
+  0%, 100% { transform: scaleY(1); }
+  50% { transform: scaleY(1.008); }
+}
+
+@keyframes traveler-sway {
+  0%, 100% { transform: translateX(0) rotate(0deg); }
+  25% { transform: translateX(1.5px) rotate(0.15deg); }
+  75% { transform: translateX(-1.5px) rotate(-0.15deg); }
+}
+
+@keyframes glow-pulse {
+  0%, 100% { opacity: 0.6; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.08); }
+}
+
+@keyframes fog-move {
+  0% { transform: translateX(-5%); }
+  100% { transform: translateX(5%); }
+}
+
+@keyframes headlight-flicker {
+  0%, 100% { opacity: 0.5; }
+  30% { opacity: 0.8; }
+  60% { opacity: 0.4; }
+  80% { opacity: 0.7; }
 }
