@@ -1,11 +1,10 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Shield, Clock, MapPin, Wifi, CreditCard, Headphones, ChevronRight, Star, Bus, Navigation, Ticket, Users } from 'lucide-react';
-import SearchForm from '@/components/SearchForm';
+import { Shield, Clock, MapPin, CreditCard, ChevronRight, Bus, Navigation } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import AnimatedHero from '@/components/AnimatedHero';
 import { popularRoutes } from '@/data/mockData';
-import heroBg from '@/assets/hero-starline.jpg';
 
 const features = [
   { icon: Navigation, title: 'Live Tracking', desc: 'Track your coach in real-time from departure to destination' },
@@ -27,77 +26,7 @@ export default function LandingPage() {
   return (
     <div className="min-h-screen bg-background">
       <Navbar />
-
-      {/* Hero */}
-      <section className="relative min-h-[100vh] flex items-center overflow-hidden">
-        {/* Background image */}
-        <div className="absolute inset-0">
-          <img src={heroBg} alt="" className="w-full h-full object-cover object-right-top" />
-          <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-background/20" />
-          <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/60" />
-          <div className="absolute bottom-0 left-0 right-0 h-40 bg-gradient-to-t from-background to-transparent" />
-        </div>
-
-        <div className="container relative z-10 pt-28 pb-16 md:pt-32 md:pb-24">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-            {/* Left - Content */}
-            <motion.div
-              initial={{ opacity: 0, y: 30 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              <div className="inline-flex items-center gap-2 bg-primary/8 border border-primary/15 rounded-full px-4 py-1.5 mb-8">
-                <Star className="w-3.5 h-3.5 text-accent" />
-                <span className="text-xs font-semibold tracking-wide text-accent uppercase">Star Line Group</span>
-              </div>
-
-              <h1 className="font-display text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.1] mb-6 tracking-tight">
-                Your Journey,{' '}
-                <span className="text-gradient-primary">Our Pride.</span>
-              </h1>
-
-              <p className="text-base md:text-lg text-muted-foreground max-w-md leading-relaxed mb-10">
-                Book intercity bus tickets with Star Line — premium coaches, live tracking, and reliable schedules across Bangladesh.
-              </p>
-
-              <div className="flex flex-col sm:flex-row gap-3 mb-6">
-                <Link
-                  to="/search"
-                  className="inline-flex items-center justify-center gap-2 bg-primary text-primary-foreground px-7 py-3.5 rounded-xl font-semibold text-sm hover:bg-primary/90 transition-all btn-primary-glow"
-                >
-                  <Ticket className="w-4 h-4" />
-                  Search Trips
-                </Link>
-                <Link
-                  to="/routes"
-                  className="inline-flex items-center justify-center gap-2 bg-secondary border border-border text-foreground px-7 py-3.5 rounded-xl font-semibold text-sm hover:bg-secondary/80 transition-all"
-                >
-                  Explore Routes
-                  <ChevronRight className="w-4 h-4" />
-                </Link>
-              </div>
-
-              <div className="flex items-center gap-6 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1.5"><Shield className="w-3.5 h-3.5 text-success" /> Verified Operator</span>
-                <span className="flex items-center gap-1.5"><Users className="w-3.5 h-3.5 text-accent" /> 2M+ Passengers</span>
-              </div>
-            </motion.div>
-
-            {/* Right - stays empty for hero image to show through */}
-            <div className="hidden lg:block" />
-          </div>
-
-          {/* Search Form */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.4 }}
-            className="mt-8 lg:mt-12"
-          >
-            <SearchForm variant="hero" />
-          </motion.div>
-        </div>
-      </section>
+      <AnimatedHero />
 
       {/* Trust Strip */}
       <section className="border-y border-border/50 bg-card/40">
