@@ -1,4 +1,4 @@
-import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
+import { motion, useMotionValue, useTransform, useSpring, MotionValue } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Users, Star, Ticket, ChevronRight } from 'lucide-react';
@@ -6,19 +6,35 @@ import { Shield, Users, Star, Ticket, ChevronRight } from 'lucide-react';
 import layerBg from '@/assets/hero-layer-background.jpg';
 import layerTraveler from '@/assets/hero-layer-traveler.png';
 
-const PARALLAX_LAYERS = [
-  {
-    src: layerBg,
-    alt: 'Night terminal scene with Starline bus',
-    depth: 0.015,
-    className: 'absolute inset-0 w-full h-full object-cover',
-  },
-  {
-    src: layerTraveler,
-    alt: 'Traveler',
-    depth: 0.05,
-    className: 'absolute right-[5%] bottom-[2%] h-[65%] w-auto object-contain traveler-idle drop-shadow-xl',
-  },
+interface LayerConfig {
+  src: string;
+  alt: string;
+  depth: number;
+  className: string;
+}
+
+function ParallaxLayer({ layer, index, smoothX, smoothY, loaded }: {
+  layer: LayerConfig; index: number; smoothX: MotionValue<number>; smoothY: MotionValue<number>; loaded: boolean;
+}) {
+  const x = useTransform(smoothX, (v) => v * layer.depth * -150);
+  const y = useTransform(smoothY, (v) => v * layer.depth * -100);
+
+  return (
+    <motion.div
+      className="absolute inset-0 will-change-transform"
+      style={{ x, y, zIndex: index }}
+      initial={{ opacity: 0, scale: 1.06 }}
+      animate={loaded ? { opacity: 1, scale: 1 } : {}}
+      transition={{ duration: 1.6, delay: index * 0.25, ease: [0.25, 0.46, 0.45, 0.94] }}
+    >
+      <img src={layer.src} alt={layer.alt} className={layer.className} draggable={false} />
+    </motion.div>
+  );
+}
+
+const PARALLAX_LAYERS: LayerConfig[] = [
+  { src: layerBg, alt: 'Night terminal scene with Starline bus', depth: 0.015, className: 'absolute inset-0 w-full h-full object-cover' },
+  { src: layerTraveler, alt: 'Traveler', depth: 0.05, className: 'absolute right-[5%] bottom-[2%] h-[65%] w-auto object-contain traveler-idle drop-shadow-xl' },
 ];
 
 export default function AnimatedHero() {
@@ -38,10 +54,8 @@ export default function AnimatedHero() {
     const handleMouse = (e: MouseEvent) => {
       if (!containerRef.current) return;
       const rect = containerRef.current.getBoundingClientRect();
-      const cx = (e.clientX - rect.left) / rect.width - 0.5;
-      const cy = (e.clientY - rect.top) / rect.height - 0.5;
-      mouseX.set(cx);
-      mouseY.set(cy);
+      mouseX.set((e.clientX - rect.left) / rect.width - 0.5);
+      mouseY.set((e.clientY - rect.top) / rect.height - 0.5);
     };
     window.addEventListener('mousemove', handleMouse);
     return () => window.removeEventListener('mousemove', handleMouse);
@@ -49,33 +63,9 @@ export default function AnimatedHero() {
 
   return (
     <section ref={containerRef} className="relative min-h-[100vh] flex items-center overflow-hidden">
-      {/* Parallax Layers */}
-      {PARALLAX_LAYERS.map((layer, i) => {
-        const x = useTransform(smoothX, (v) => v * layer.depth * -150);
-        const y = useTransform(smoothY, (v) => v * layer.depth * -100);
-
-        return (
-          <motion.div
-            key={i}
-            className="absolute inset-0 will-change-transform"
-            style={{ x, y, zIndex: i }}
-            initial={{ opacity: 0, scale: 1.06 }}
-            animate={loaded ? { opacity: 1, scale: 1 } : {}}
-            transition={{
-              duration: 1.6,
-              delay: i * 0.25,
-              ease: [0.25, 0.46, 0.45, 0.94],
-            }}
-          >
-            <img
-              src={layer.src}
-              alt={layer.alt}
-              className={layer.className}
-              draggable={false}
-            />
-          </motion.div>
-        );
-      })}
+      {PARALLAX_LAYERS.map((layer, i) => (
+        <ParallaxLayer key={i} layer={layer} index={i} smoothX={smoothX} smoothY={smoothY} loaded={loaded} />
+      ))}
 
       {/* Ambient Effects */}
       <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 3 }}>
