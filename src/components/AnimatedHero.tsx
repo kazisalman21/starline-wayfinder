@@ -2,7 +2,6 @@ import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Users, Star, Ticket, ChevronRight } from 'lucide-react';
-import SearchForm from '@/components/SearchForm';
 
 import layerBg from '@/assets/hero-layer-background.jpg';
 import layerBus from '@/assets/hero-layer-bus.png';
@@ -170,15 +169,7 @@ export default function AnimatedHero() {
           <div className="hidden lg:block" />
         </div>
 
-        {/* Search Form */}
-        <motion.div
-          initial={{ opacity: 0, y: 25 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.9, delay: 1.2, ease: [0.25, 0.46, 0.45, 0.94] }}
-          className="mt-8 lg:mt-12"
-        >
-          <SearchForm variant="hero" />
-        </motion.div>
+
       </div>
     </section>
   );
