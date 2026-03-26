@@ -2,7 +2,6 @@ import { motion, useMotionValue, useTransform, useSpring } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { Shield, Users, Star, Ticket, ChevronRight } from 'lucide-react';
-import SearchForm from '@/components/SearchForm';
 
 import layerBg from '@/assets/hero-layer-background.jpg';
 import layerBus from '@/assets/hero-layer-bus.png';
