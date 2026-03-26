@@ -4,27 +4,20 @@ import { Link } from 'react-router-dom';
 import { Shield, Users, Star, Ticket, ChevronRight } from 'lucide-react';
 
 import layerBg from '@/assets/hero-layer-background.jpg';
-import layerBus from '@/assets/hero-layer-bus.png';
 import layerTraveler from '@/assets/hero-layer-traveler.png';
 
 const PARALLAX_LAYERS = [
   {
     src: layerBg,
-    alt: 'Night terminal scene',
+    alt: 'Night terminal scene with Starline bus',
     depth: 0.015,
     className: 'absolute inset-0 w-full h-full object-cover',
   },
   {
-    src: layerBus,
-    alt: 'Starline Bus',
-    depth: 0.04,
-    className: 'absolute right-[2%] bottom-[6%] h-[55%] w-auto object-contain drop-shadow-2xl',
-  },
-  {
     src: layerTraveler,
     alt: 'Traveler',
-    depth: 0.06,
-    className: 'absolute right-[28%] bottom-[4%] h-[58%] w-auto object-contain traveler-idle drop-shadow-xl',
+    depth: 0.05,
+    className: 'absolute right-[5%] bottom-[2%] h-[65%] w-auto object-contain traveler-idle drop-shadow-xl',
   },
 ];
 
@@ -85,23 +78,22 @@ export default function AnimatedHero() {
       })}
 
       {/* Ambient Effects */}
-      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 4 }}>
+      <div className="absolute inset-0 pointer-events-none" style={{ zIndex: 3 }}>
         <div className="lamppost-glow" />
         <div className="fog-drift" />
         <div className="headlight-bloom" />
-        {/* Wet road shimmer */}
         <div className="road-shimmer" />
       </div>
 
       {/* Gradient overlays */}
-      <div className="absolute inset-0" style={{ zIndex: 5 }}>
-        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/90 to-transparent" />
+      <div className="absolute inset-0" style={{ zIndex: 4 }}>
+        <div className="absolute inset-0 bg-gradient-to-r from-background via-background/85 to-transparent" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-background/30" />
         <div className="absolute bottom-0 left-0 right-0 h-56 bg-gradient-to-t from-background to-transparent" />
       </div>
 
       {/* Content */}
-      <div className="container relative pt-28 pb-16 md:pt-32 md:pb-24" style={{ zIndex: 6 }}>
+      <div className="container relative pt-28 pb-16 md:pt-32 md:pb-24" style={{ zIndex: 5 }}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
           <motion.div
             initial={{ opacity: 0, y: 40 }}
@@ -168,8 +160,6 @@ export default function AnimatedHero() {
 
           <div className="hidden lg:block" />
         </div>
-
-
       </div>
     </section>
   );
