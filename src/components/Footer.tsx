@@ -24,9 +24,9 @@ export default function Footer() {
             </div>
           </div>
           <div>
-            <h4 className="font-display font-semibold text-sm mb-4 tracking-wide uppercase text-foreground/80">Support</h4>
+            <h4 className="font-display font-semibold text-sm mb-4 tracking-wide uppercase text-foreground/80">Support & Legal</h4>
             <div className="flex flex-col gap-2.5">
-              {[['/support', 'Help Center'], ['/support', 'Cancellation Policy'], ['/support', 'Baggage Info'], ['/support', 'Contact Us']].map(([to, label], i) => (
+              {[['/support', 'Help Center'], ['/terms', 'Terms of Service'], ['/privacy', 'Privacy Policy'], ['/support', 'Contact Us']].map(([to, label], i) => (
                 <Link key={i} to={to} className="text-sm text-muted-foreground hover:text-foreground transition-colors">{label}</Link>
               ))}
             </div>
