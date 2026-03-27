@@ -72,7 +72,7 @@ export default function Navbar() {
             className="md:hidden bg-background/95 backdrop-blur-2xl border-b border-border overflow-hidden"
           >
             <div className="container py-3 flex flex-col gap-0.5">
-              {[...navLinks, { to: '/admin', label: 'Admin Dashboard' }].map(l => (
+              {[...navLinks, { to: '/dashboard', label: 'My Account' }, { to: '/admin', label: 'Admin Dashboard' }].map(l => (
                 <Link
                   key={l.to}
                   to={l.to}
