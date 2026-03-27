@@ -13,6 +13,7 @@ import LiveTracking from "./pages/LiveTracking.tsx";
 import RoutesFleet from "./pages/RoutesFleet.tsx";
 import Support from "./pages/Support.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
+import PassengerDashboard from "./pages/PassengerDashboard.tsx";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -33,6 +34,7 @@ const App = () => (
           <Route path="/live-tracking" element={<LiveTracking />} />
           <Route path="/routes" element={<RoutesFleet />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/dashboard" element={<PassengerDashboard />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
