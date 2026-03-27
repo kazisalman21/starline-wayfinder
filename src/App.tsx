@@ -12,6 +12,8 @@ import ManageBooking from "./pages/ManageBooking.tsx";
 import LiveTracking from "./pages/LiveTracking.tsx";
 import RoutesFleet from "./pages/RoutesFleet.tsx";
 import Support from "./pages/Support.tsx";
+import TermsOfService from "./pages/TermsOfService.tsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import PassengerDashboard from "./pages/PassengerDashboard.tsx";
 import NotFound from "./pages/NotFound.tsx";
@@ -34,6 +36,8 @@ const App = () => (
           <Route path="/live-tracking" element={<LiveTracking />} />
           <Route path="/routes" element={<RoutesFleet />} />
           <Route path="/support" element={<Support />} />
+          <Route path="/terms" element={<TermsOfService />} />
+          <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/dashboard" element={<PassengerDashboard />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
