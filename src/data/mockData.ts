@@ -85,7 +85,7 @@ export function generateBusResults(from: string, to: string, date: string): BusR
     const durationMins = parseInt(baseDuration.split(' ')[1]?.replace('m', '') || '0');
     const arrHour = (depHour + durationHours) % 24;
     const arrMin = durationMins;
-    const fareMultiplier = coach.type === 'AC Sleeper' ? 2.2 : coach.type === 'AC Business' ? 1.6 : coach.type === 'AC Economy' ? 1.2 : 1;
+    const fareMultiplier = coach.type === 'AC' ? 1.5 : 1;
     
     return {
       id: `bus-${i}`,
