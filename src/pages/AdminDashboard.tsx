@@ -15,6 +15,8 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
+import CounterManagementSection from '@/components/admin/CounterManagementSection';
+import RouteManagementSection from '@/components/admin/RouteManagementSection';
 
 // --- Admin Tab Types ---
 type AdminTab = 'overview' | 'fleet' | 'counters' | 'routes' | 'bookings' | 'drivers' | 'settings';
@@ -111,7 +113,6 @@ export default function AdminDashboard() {
   const [activeTab, setActiveTab] = useState<AdminTab>('overview');
   const [searchQuery, setSearchQuery] = useState('');
   const [showAddBus, setShowAddBus] = useState(false);
-  const [showAddCounter, setShowAddCounter] = useState(false);
   const [showAddDriver, setShowAddDriver] = useState(false);
   const [selectedItem, setSelectedItem] = useState<any>(null);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState<string | null>(null);
@@ -119,12 +120,10 @@ export default function AdminDashboard() {
 
   // Form states
   const [busForm, setBusForm] = useState({ name: '', regNo: '', type: 'AC Business', seats: '36', fuelType: 'Diesel', driver: '' });
-  const [counterForm, setCounterForm] = useState({ name: '', location: '', district: '', phone: '' });
   const [driverForm, setDriverForm] = useState({ name: '', phone: '', license: '', experience: '' });
 
   const resetForms = () => {
     setBusForm({ name: '', regNo: '', type: 'AC Business', seats: '36', fuelType: 'Diesel', driver: '' });
-    setCounterForm({ name: '', location: '', district: '', phone: '' });
     setDriverForm({ name: '', phone: '', license: '', experience: '' });
   };
 
@@ -132,7 +131,6 @@ export default function AdminDashboard() {
     // ============= OVERVIEW =============
     overview: (
       <div className="space-y-6">
-        {/* Stat Cards */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {statCards.map((stat, i) => (
             <motion.div key={i} initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }} className="glass-card p-5 card-hover">
@@ -146,7 +144,6 @@ export default function AdminDashboard() {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Revenue Chart */}
           <div className="glass-card p-6">
             <h3 className="font-display font-semibold mb-4">Weekly Revenue</h3>
             <ResponsiveContainer width="100%" height={220}>
@@ -160,7 +157,6 @@ export default function AdminDashboard() {
             </ResponsiveContainer>
           </div>
 
-          {/* Fleet Composition */}
           <div className="glass-card p-6">
             <h3 className="font-display font-semibold mb-4">Fleet Composition</h3>
             <ResponsiveContainer width="100%" height={220}>
@@ -181,7 +177,6 @@ export default function AdminDashboard() {
             </div>
           </div>
 
-          {/* Occupancy Trend */}
           <div className="glass-card p-6">
             <h3 className="font-display font-semibold mb-4">Occupancy Trend</h3>
             <ResponsiveContainer width="100%" height={220}>
@@ -196,7 +191,6 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Departures */}
         <div className="glass-card p-6">
           <h3 className="font-display font-semibold mb-4">Upcoming Departures</h3>
           <div className="grid gap-3 md:grid-cols-2">
@@ -276,7 +270,6 @@ export default function AdminDashboard() {
           </Table>
         </div>
 
-        {/* Fleet Stats Row */}
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {[
             { label: 'Active Buses', value: fleetData.filter(b => b.status === 'active').length, icon: Power, color: 'text-success' },
@@ -294,130 +287,11 @@ export default function AdminDashboard() {
       </div>
     ),
 
-    // ============= COUNTERS / TERMINALS =============
-    counters: (
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <h2 className="font-display text-xl font-bold">Counter & Terminal Management</h2>
-            <p className="text-sm text-muted-foreground">{terminals.length} terminals registered</p>
-          </div>
-          <div className="flex items-center gap-3 w-full sm:w-auto">
-            <div className="relative flex-1 sm:flex-none">
-              <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-muted-foreground" />
-              <Input placeholder="Search terminals..." className="pl-9 bg-secondary/50 border-border/40 sm:w-64" value={searchQuery} onChange={e => setSearchQuery(e.target.value)} />
-            </div>
-            <Button onClick={() => { resetForms(); setShowAddCounter(true); }} className="btn-primary-glow shrink-0">
-              <Plus className="w-4 h-4 mr-1" /> Add Terminal
-            </Button>
-          </div>
-        </div>
+    // ============= COUNTERS — NEW COMPONENT =============
+    counters: <CounterManagementSection />,
 
-        <div className="grid gap-4 md:grid-cols-2">
-          {terminals.filter(t => !searchQuery || t.name.toLowerCase().includes(searchQuery.toLowerCase()) || t.district.toLowerCase().includes(searchQuery.toLowerCase())).map((terminal, i) => (
-            <motion.div key={terminal.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.04 }} className="glass-card p-5 card-hover">
-              <div className="flex items-start justify-between">
-                <div className="flex items-center gap-3">
-                  <div className={`w-10 h-10 rounded-xl flex items-center justify-center ${terminal.isMainTerminal ? 'bg-primary/15' : 'bg-secondary/60'}`}>
-                    <Building2 className={`w-5 h-5 ${terminal.isMainTerminal ? 'text-primary' : 'text-muted-foreground'}`} />
-                  </div>
-                  <div>
-                    <div className="font-medium text-sm">{terminal.name}</div>
-                    <div className="text-xs text-muted-foreground">{terminal.location}</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1">
-                  <Button variant="ghost" size="icon" className="h-7 w-7"><Pencil className="w-3.5 h-3.5" /></Button>
-                  <Button variant="ghost" size="icon" className="h-7 w-7 text-destructive hover:text-destructive" onClick={() => setShowDeleteConfirm(terminal.id)}><Trash2 className="w-3.5 h-3.5" /></Button>
-                </div>
-              </div>
-              <div className="mt-3 flex items-center gap-4 text-xs text-muted-foreground">
-                <span className="flex items-center gap-1"><Phone className="w-3 h-3" /> {terminal.phone}</span>
-                <span className="flex items-center gap-1"><MapPin className="w-3 h-3" /> {terminal.district}</span>
-              </div>
-              <div className="mt-2 flex items-center gap-2">
-                {terminal.isMainTerminal && <span className="text-xs bg-primary/15 text-primary px-2 py-0.5 rounded-full font-medium">Main Terminal</span>}
-                <span className="text-xs bg-success/15 text-success px-2 py-0.5 rounded-full font-medium">Active</span>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* Routes associated */}
-        <div className="glass-card p-6">
-          <h3 className="font-display font-semibold mb-4">Route-Counter Associations</h3>
-          <div className="space-y-3">
-            {routeData.slice(0, 5).map((route) => (
-              <div key={route.id} className="flex items-center justify-between bg-secondary/30 p-4 rounded-xl">
-                <div className="flex items-center gap-3">
-                  <Route className="w-4 h-4 text-primary" />
-                  <div>
-                    <div className="font-medium text-sm">{route.from} → {route.to}</div>
-                    <div className="text-xs text-muted-foreground">{route.counters.length} stops</div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs text-muted-foreground hidden sm:block">{route.counters.filter(c => c.status === 'Active').length} active</span>
-                  <ChevronRight className="w-4 h-4 text-muted-foreground" />
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    ),
-
-    // ============= ROUTES =============
-    routes: (
-      <div className="space-y-6">
-        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
-          <div>
-            <h2 className="font-display text-xl font-bold">Route Management</h2>
-            <p className="text-sm text-muted-foreground">{routeData.length} routes configured</p>
-          </div>
-          <Button className="btn-primary-glow"><Plus className="w-4 h-4 mr-1" /> Add Route</Button>
-        </div>
-
-        <div className="glass-card overflow-hidden">
-          <Table>
-            <TableHeader>
-              <TableRow className="border-border/40 hover:bg-transparent">
-                <TableHead className="text-muted-foreground">Route ID</TableHead>
-                <TableHead className="text-muted-foreground">From</TableHead>
-                <TableHead className="text-muted-foreground">To</TableHead>
-                <TableHead className="text-muted-foreground hidden md:table-cell">Stops</TableHead>
-                <TableHead className="text-muted-foreground hidden md:table-cell">Status</TableHead>
-                <TableHead className="text-muted-foreground text-right">Actions</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {routeData.map((route, i) => (
-                <motion.tr key={route.id} initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: i * 0.03 }} className="border-border/20 hover:bg-secondary/20">
-                  <TableCell className="font-mono text-xs text-muted-foreground uppercase">{route.id}</TableCell>
-                  <TableCell className="font-medium text-sm">{route.from}</TableCell>
-                  <TableCell className="font-medium text-sm">{route.to}</TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    <span className="text-xs bg-secondary/60 px-2 py-1 rounded-md">{route.counters.length} stops</span>
-                  </TableCell>
-                  <TableCell className="hidden md:table-cell">
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${route.counters.some(c => c.status === 'Unverified') ? 'bg-warning/15 text-warning' : 'bg-success/15 text-success'}`}>
-                      {route.counters.some(c => c.status === 'Unverified') ? 'Partially Verified' : 'Verified'}
-                    </span>
-                  </TableCell>
-                  <TableCell className="text-right">
-                    <div className="flex items-center justify-end gap-1">
-                      <Button variant="ghost" size="icon" className="h-8 w-8"><Eye className="w-4 h-4" /></Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8"><Pencil className="w-4 h-4" /></Button>
-                      <Button variant="ghost" size="icon" className="h-8 w-8 text-destructive hover:text-destructive"><Trash2 className="w-4 h-4" /></Button>
-                    </div>
-                  </TableCell>
-                </motion.tr>
-              ))}
-            </TableBody>
-          </Table>
-        </div>
-      </div>
-    ),
+    // ============= ROUTES — NEW COMPONENT =============
+    routes: <RouteManagementSection />,
 
     // ============= BOOKINGS =============
     bookings: (
@@ -436,7 +310,6 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Quick Stats */}
         <div className="grid grid-cols-3 gap-4">
           {[
             { label: 'Confirmed', value: bookingsData.filter(b => b.status === 'confirmed').length, color: 'text-success' },
@@ -646,28 +519,6 @@ export default function AdminDashboard() {
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddBus(false)}>Cancel</Button>
             <Button className="btn-primary-glow" onClick={() => setShowAddBus(false)}><Check className="w-4 h-4 mr-1" /> Add Bus</Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
-
-      {/* Add Counter Dialog */}
-      <Dialog open={showAddCounter} onOpenChange={setShowAddCounter}>
-        <DialogContent className="glass-card border-border/40">
-          <DialogHeader>
-            <DialogTitle className="font-display">Add New Terminal</DialogTitle>
-            <DialogDescription>Register a new counter or terminal location.</DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4">
-            <div><label className="text-xs text-muted-foreground mb-1 block">Terminal Name</label><Input placeholder="e.g. Tongi Star Line Counter" className="bg-secondary/50" value={counterForm.name} onChange={e => setCounterForm(p => ({ ...p, name: e.target.value }))} /></div>
-            <div className="grid grid-cols-2 gap-4">
-              <div><label className="text-xs text-muted-foreground mb-1 block">Location</label><Input placeholder="e.g. Tongi Bus Stand" className="bg-secondary/50" value={counterForm.location} onChange={e => setCounterForm(p => ({ ...p, location: e.target.value }))} /></div>
-              <div><label className="text-xs text-muted-foreground mb-1 block">District</label><Input placeholder="e.g. Gazipur" className="bg-secondary/50" value={counterForm.district} onChange={e => setCounterForm(p => ({ ...p, district: e.target.value }))} /></div>
-            </div>
-            <div><label className="text-xs text-muted-foreground mb-1 block">Phone</label><Input placeholder="e.g. 01973-259700" className="bg-secondary/50" value={counterForm.phone} onChange={e => setCounterForm(p => ({ ...p, phone: e.target.value }))} /></div>
-          </div>
-          <DialogFooter>
-            <Button variant="outline" onClick={() => setShowAddCounter(false)}>Cancel</Button>
-            <Button className="btn-primary-glow" onClick={() => setShowAddCounter(false)}><Check className="w-4 h-4 mr-1" /> Add Terminal</Button>
           </DialogFooter>
         </DialogContent>
       </Dialog>
