@@ -5,9 +5,10 @@ import { ChevronRight, User, MapPin } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
-// 2+2 layout with aisle gap (matching real Starline bus layout from reference)
+// Starline real bus seat layout — door-side single seat "A" + 2+2 rows + 5-seat back row
 // Each row: [left1, left2, 'aisle', right1, right2]
 const seatLayout = [
+  ['A', '', '', '', ''],       // single door-side seat
   ['A1', 'A2', '', 'A3', 'A4'],
   ['B1', 'B2', '', 'B3', 'B4'],
   ['C1', 'C2', '', 'C3', 'C4'],
@@ -17,7 +18,7 @@ const seatLayout = [
   ['G1', 'G2', '', 'G3', 'G4'],
   ['H1', 'H2', '', 'H3', 'H4'],
   ['I1', 'I2', '', 'I3', 'I4'],
-  ['J1', 'J2', 'J3', 'J4', 'J5'], // back row — 5 seats
+  ['J1', 'J2', 'J5', 'J3', 'J4'], // back row — 5 seats
 ];
 
 const unavailable = ['B3', 'C1', 'D4', 'F2', 'G3', 'H1', 'I4', 'J3'];
