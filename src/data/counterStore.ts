@@ -1,6 +1,7 @@
 import { create } from 'zustand';
-import type { Counter, CounterStatus, RouteData, RouteStatus, RoutePoint } from './types';
+import type { Counter, CounterStatus, RouteData, RouteStatus } from './types';
 import { terminals, routes as csvRoutes } from './routeCounters';
+import type { Counter as CsvCounter } from './routeCounters';
 
 // Generate IDs
 let _counterId = 100;
@@ -10,19 +11,21 @@ export const generateCounterId = () => `C${++_counterId}`;
 export const generateRouteId = () => `R${++_routeId}`;
 export const generatePointId = () => `P${++_pointId}`;
 
+const isBreakType = (type: string) => type === 'Break (20 min)';
+
 // Seed counters from existing routeCounters data
 const seedCounters: Counter[] = terminals.map((t, i) => ({
   id: `C${i + 1}`,
   code: t.id.toUpperCase(),
   name: t.name,
-  type: t.isPrimary ? 'Main Terminal' as const : 'Counter' as const,
+  type: t.isMainTerminal ? 'Main Terminal' as const : 'Counter' as const,
   district: t.district,
-  address: t.address,
+  address: t.location,
   phone: t.phone,
   notes: '',
   mapLocation: `${t.lat}, ${t.lng}`,
   status: 'active' as const,
-  isMainTerminal: t.isPrimary,
+  isMainTerminal: t.isMainTerminal,
   createdAt: '2026-01-01',
   updatedAt: '2026-03-25',
 }));
@@ -31,25 +34,25 @@ const seedCounters: Counter[] = terminals.map((t, i) => ({
 const seedRoutes: RouteData[] = csvRoutes.map((r, i) => ({
   id: `R${i + 1}`,
   code: r.id.toUpperCase(),
-  name: r.name,
+  name: `${r.from} → ${r.to}`,
   from: r.from,
   to: r.to,
   direction: 'Outbound',
-  estimatedDuration: r.totalDuration,
+  estimatedDuration: '',
   baseFare: 0,
-  status: (r.status === 'verified' ? 'active' : 'draft') as RouteStatus,
+  status: 'active' as const,
   notes: '',
-  points: r.counters.map((c, ci) => ({
+  points: r.counters.map((c: CsvCounter, ci: number) => ({
     id: `P${i * 100 + ci}`,
     routeId: `R${i + 1}`,
     orderIndex: ci + 1,
-    pointType: ci === 0 ? 'Origin Terminal' as const : ci === r.counters.length - 1 ? 'Destination Terminal' as const : c.isBreak ? 'Break Point' as const : 'Counter' as const,
+    pointType: ci === 0 ? 'Origin Terminal' as const : ci === r.counters.length - 1 ? 'Destination Terminal' as const : isBreakType(c.type) ? 'Break Point' as const : 'Counter' as const,
     counterId: null,
     customPointName: c.name,
-    haltMinutes: c.isBreak ? 0 : 5,
-    breakMinutes: c.isBreak ? (c.breakDuration || 20) : 0,
-    isBoardingAllowed: !c.isBreak,
-    isDroppingAllowed: !c.isBreak,
+    haltMinutes: isBreakType(c.type) ? 0 : 5,
+    breakMinutes: isBreakType(c.type) ? 20 : 0,
+    isBoardingAllowed: !isBreakType(c.type),
+    isDroppingAllowed: !isBreakType(c.type),
     isVisibleToCustomer: true,
     status: 'active' as const,
     notes: '',
