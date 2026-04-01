@@ -5,11 +5,12 @@ import {
   Bus, Users, DollarSign, Clock, AlertTriangle, Headphones, TrendingUp, MapPin,
   Plus, Pencil, Trash2, Search, Filter, Eye, X, Check, ChevronRight,
   LayoutDashboard, Route, Building2, UserCog, Ticket, Settings, Shield,
-  Phone, Mail, Calendar, Fuel, Wrench, Star, Download, MoreVertical, Power
+  Phone, Mail, Calendar, Fuel, Wrench, Star, Download, MoreVertical, Power,
+  Camera, UserCheck, ClipboardList
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
-import { adminStats, coachTypes } from '@/data/mockData';
+import { adminStats } from '@/data/mockData';
 import { terminals, routes as routeData } from '@/data/routeCounters';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -31,16 +32,20 @@ const adminTabs: { id: AdminTab; label: string; icon: typeof LayoutDashboard }[]
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
 
+// --- Bus type options ---
+const busTypeOptions = ['AC', 'Non-AC'];
+const seatCapacityOptions = [36, 40, 41];
+
 // --- Mock Fleet Data ---
 const fleetData = [
-  { id: 'B001', regNo: 'Dhaka Metro-Ga-12-3456', name: 'Starline Platinum-01', type: 'AC Sleeper', seats: 24, status: 'active', lastService: '2026-03-15', mileage: 125400, fuelType: 'Diesel', driver: 'Karim Uddin', route: 'Dhaka → Chattogram' },
-  { id: 'B002', regNo: 'Dhaka Metro-Ga-14-7890', name: 'Starline Gold-03', type: 'AC Business', seats: 36, status: 'active', lastService: '2026-03-10', mileage: 98200, fuelType: 'Diesel', driver: 'Rafiq Hossain', route: 'Dhaka → Cox\'s Bazar' },
-  { id: 'B003', regNo: 'Dhaka Metro-Ga-15-2345', name: 'Starline Silver-05', type: 'AC Economy', seats: 40, status: 'maintenance', lastService: '2026-03-20', mileage: 145600, fuelType: 'Diesel', driver: 'Alam Sheikh', route: 'Dhaka → Sylhet' },
-  { id: 'B004', regNo: 'Dhaka Metro-Ga-16-6789', name: 'Starline Gold-02', type: 'AC Business', seats: 36, status: 'active', lastService: '2026-03-08', mileage: 110300, fuelType: 'Diesel', driver: 'Hasan Ali', route: 'Dhaka → Rajshahi' },
-  { id: 'B005', regNo: 'Dhaka Metro-Ga-17-1234', name: 'Starline Platinum-04', type: 'AC Sleeper', seats: 24, status: 'active', lastService: '2026-03-18', mileage: 87500, fuelType: 'Diesel', driver: 'Jamal Mia', route: 'Chattogram → Cox\'s Bazar' },
-  { id: 'B006', regNo: 'Dhaka Metro-Ga-18-5678', name: 'Starline Express-08', type: 'Non-AC', seats: 44, status: 'inactive', lastService: '2026-02-28', mileage: 201000, fuelType: 'Diesel', driver: 'Unassigned', route: 'Dhaka → Feni' },
-  { id: 'B007', regNo: 'Dhaka Metro-Ga-19-9012', name: 'Starline Silver-11', type: 'AC Economy', seats: 40, status: 'active', lastService: '2026-03-22', mileage: 67800, fuelType: 'CNG', driver: 'Belal Hossain', route: 'Feni → Chittagong' },
-  { id: 'B008', regNo: 'Dhaka Metro-Ga-20-3456', name: 'Starline Gold-06', type: 'AC Business', seats: 36, status: 'active', lastService: '2026-03-19', mileage: 92100, fuelType: 'Diesel', driver: 'Sumon Ahmed', route: 'Feni → Lakshmipur' },
+  { id: 'B001', regNo: 'Dhaka Metro-Ga-12-3456', name: 'Starline Platinum-01', type: 'AC', seats: 36, status: 'active', lastService: '2026-03-15', mileage: 125400, fuelType: 'Diesel', driver: 'Karim Uddin', staff: 'Arif Rahman', supervisor: 'Md. Nasir', route: 'Dhaka → Chattogram' },
+  { id: 'B002', regNo: 'Dhaka Metro-Ga-14-7890', name: 'Starline Gold-03', type: 'AC', seats: 36, status: 'active', lastService: '2026-03-10', mileage: 98200, fuelType: 'Diesel', driver: 'Rafiq Hossain', staff: 'Sabbir Hasan', supervisor: 'Md. Nasir', route: 'Dhaka → Cox\'s Bazar' },
+  { id: 'B003', regNo: 'Dhaka Metro-Ga-15-2345', name: 'Starline Silver-05', type: 'AC', seats: 40, status: 'maintenance', lastService: '2026-03-20', mileage: 145600, fuelType: 'Diesel', driver: 'Alam Sheikh', staff: 'Jubayer Ali', supervisor: 'Tariq Uddin', route: 'Dhaka → Sylhet' },
+  { id: 'B004', regNo: 'Dhaka Metro-Ga-16-6789', name: 'Starline Gold-02', type: 'AC', seats: 36, status: 'active', lastService: '2026-03-08', mileage: 110300, fuelType: 'Diesel', driver: 'Hasan Ali', staff: 'Ripon Das', supervisor: 'Tariq Uddin', route: 'Dhaka → Rajshahi' },
+  { id: 'B005', regNo: 'Dhaka Metro-Ga-17-1234', name: 'Starline Platinum-04', type: 'AC', seats: 41, status: 'active', lastService: '2026-03-18', mileage: 87500, fuelType: 'Diesel', driver: 'Jamal Mia', staff: 'Sohel Rana', supervisor: 'Md. Nasir', route: 'Chattogram → Cox\'s Bazar' },
+  { id: 'B006', regNo: 'Dhaka Metro-Ga-18-5678', name: 'Starline Express-08', type: 'Non-AC', seats: 40, status: 'inactive', lastService: '2026-02-28', mileage: 201000, fuelType: 'Diesel', driver: 'Unassigned', staff: 'Unassigned', supervisor: 'Unassigned', route: 'Dhaka → Feni' },
+  { id: 'B007', regNo: 'Dhaka Metro-Ga-19-9012', name: 'Starline Silver-11', type: 'AC', seats: 40, status: 'active', lastService: '2026-03-22', mileage: 67800, fuelType: 'CNG', driver: 'Belal Hossain', staff: 'Mamun Sheikh', supervisor: 'Tariq Uddin', route: 'Feni → Chittagong' },
+  { id: 'B008', regNo: 'Dhaka Metro-Ga-20-3456', name: 'Starline Gold-06', type: 'AC', seats: 36, status: 'active', lastService: '2026-03-19', mileage: 92100, fuelType: 'Diesel', driver: 'Sumon Ahmed', staff: 'Rezaul Karim', supervisor: 'Md. Nasir', route: 'Feni → Lakshmipur' },
 ];
 
 // --- Mock Bookings Data ---
@@ -97,9 +102,7 @@ const statCards = [
 
 // Pie chart data
 const fleetTypePie = [
-  { name: 'AC Sleeper', value: 2, color: 'hsl(355, 70%, 42%)' },
-  { name: 'AC Business', value: 3, color: 'hsl(42, 85%, 52%)' },
-  { name: 'AC Economy', value: 2, color: 'hsl(210, 75%, 52%)' },
+  { name: 'AC', value: 7, color: 'hsl(355, 70%, 42%)' },
   { name: 'Non-AC', value: 1, color: 'hsl(220, 10%, 50%)' },
 ];
 
@@ -119,12 +122,26 @@ export default function AdminDashboard() {
   const [showViewDialog, setShowViewDialog] = useState(false);
 
   // Form states
-  const [busForm, setBusForm] = useState({ name: '', regNo: '', type: 'AC Business', seats: '36', fuelType: 'Diesel', driver: '' });
-  const [driverForm, setDriverForm] = useState({ name: '', phone: '', license: '', experience: '' });
+  const [busForm, setBusForm] = useState({ name: '', regNo: '', type: 'AC', seats: '36', fuelType: 'Diesel', driver: '', staff: '', supervisor: '' });
+  const [driverForm, setDriverForm] = useState({ name: '', photo: '', phone: '', license: '', experience: '' });
+  const [driverPhotoPreview, setDriverPhotoPreview] = useState<string | null>(null);
 
   const resetForms = () => {
-    setBusForm({ name: '', regNo: '', type: 'AC Business', seats: '36', fuelType: 'Diesel', driver: '' });
-    setDriverForm({ name: '', phone: '', license: '', experience: '' });
+    setBusForm({ name: '', regNo: '', type: 'AC', seats: '36', fuelType: 'Diesel', driver: '', staff: '', supervisor: '' });
+    setDriverForm({ name: '', photo: '', phone: '', license: '', experience: '' });
+    setDriverPhotoPreview(null);
+  };
+
+  const handleDriverPhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setDriverPhotoPreview(reader.result as string);
+        setDriverForm(p => ({ ...p, photo: file.name }));
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   const tabContent: Record<AdminTab, JSX.Element> = {
@@ -241,6 +258,8 @@ export default function AdminDashboard() {
                 <TableHead className="text-muted-foreground hidden md:table-cell">Type</TableHead>
                 <TableHead className="text-muted-foreground hidden lg:table-cell">Reg. No</TableHead>
                 <TableHead className="text-muted-foreground hidden md:table-cell">Driver</TableHead>
+                <TableHead className="text-muted-foreground hidden lg:table-cell">Staff</TableHead>
+                <TableHead className="text-muted-foreground hidden lg:table-cell">Supervisor</TableHead>
                 <TableHead className="text-muted-foreground">Status</TableHead>
                 <TableHead className="text-muted-foreground text-right">Actions</TableHead>
               </TableRow>
@@ -256,6 +275,8 @@ export default function AdminDashboard() {
                   <TableCell className="hidden md:table-cell"><span className="text-xs bg-secondary/60 px-2 py-1 rounded-md">{bus.type}</span></TableCell>
                   <TableCell className="hidden lg:table-cell text-xs text-muted-foreground">{bus.regNo}</TableCell>
                   <TableCell className="hidden md:table-cell text-sm">{bus.driver}</TableCell>
+                  <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">{bus.staff}</TableCell>
+                  <TableCell className="hidden lg:table-cell text-sm text-muted-foreground">{bus.supervisor}</TableCell>
                   <TableCell><span className={`px-2 py-1 rounded-full text-xs font-medium capitalize ${statusBadge(bus.status)}`}>{bus.status}</span></TableCell>
                   <TableCell className="text-right">
                     <div className="flex items-center justify-end gap-1">
@@ -382,8 +403,12 @@ export default function AdminDashboard() {
             <motion.div key={driver.id} initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }} className="glass-card p-5 card-hover">
               <div className="flex items-start justify-between mb-3">
                 <div className="flex items-center gap-3">
-                  <div className="w-11 h-11 rounded-full bg-secondary/60 flex items-center justify-center">
-                    <UserCog className="w-5 h-5 text-muted-foreground" />
+                  <div className="w-11 h-11 rounded-full bg-secondary/60 flex items-center justify-center overflow-hidden">
+                    {driver.photo ? (
+                      <img src={driver.photo} alt={driver.name} className="w-full h-full object-cover" />
+                    ) : (
+                      <UserCog className="w-5 h-5 text-muted-foreground" />
+                    )}
                   </div>
                   <div>
                     <div className="font-medium">{driver.name}</div>
@@ -491,7 +516,7 @@ export default function AdminDashboard() {
 
       {/* Add Bus Dialog */}
       <Dialog open={showAddBus} onOpenChange={setShowAddBus}>
-        <DialogContent className="glass-card border-border/40">
+        <DialogContent className="glass-card border-border/40 max-w-xl">
           <DialogHeader>
             <DialogTitle className="font-display">Add New Bus</DialogTitle>
             <DialogDescription>Register a new bus to the Starline fleet.</DialogDescription>
@@ -504,17 +529,34 @@ export default function AdminDashboard() {
             <div className="grid grid-cols-3 gap-4">
               <div><label className="text-xs text-muted-foreground mb-1 block">Coach Type</label>
                 <select className="w-full h-10 rounded-md border border-input bg-secondary/50 px-3 text-sm" value={busForm.type} onChange={e => setBusForm(p => ({ ...p, type: e.target.value }))}>
-                  {coachTypes.map(c => <option key={c.type} value={c.type}>{c.type}</option>)}
+                  {busTypeOptions.map(t => <option key={t} value={t}>{t}</option>)}
                 </select>
               </div>
-              <div><label className="text-xs text-muted-foreground mb-1 block">Seats</label><Input type="number" className="bg-secondary/50" value={busForm.seats} onChange={e => setBusForm(p => ({ ...p, seats: e.target.value }))} /></div>
+              <div><label className="text-xs text-muted-foreground mb-1 block">Seat Capacity</label>
+                <select className="w-full h-10 rounded-md border border-input bg-secondary/50 px-3 text-sm" value={busForm.seats} onChange={e => setBusForm(p => ({ ...p, seats: e.target.value }))}>
+                  {seatCapacityOptions.map(s => <option key={s} value={String(s)}>{s} Seats</option>)}
+                </select>
+              </div>
               <div><label className="text-xs text-muted-foreground mb-1 block">Fuel Type</label>
                 <select className="w-full h-10 rounded-md border border-input bg-secondary/50 px-3 text-sm" value={busForm.fuelType} onChange={e => setBusForm(p => ({ ...p, fuelType: e.target.value }))}>
                   <option>Diesel</option><option>CNG</option><option>Electric</option>
                 </select>
               </div>
             </div>
-            <div><label className="text-xs text-muted-foreground mb-1 block">Assign Driver</label><Input placeholder="Driver name" className="bg-secondary/50" value={busForm.driver} onChange={e => setBusForm(p => ({ ...p, driver: e.target.value }))} /></div>
+            <div className="grid grid-cols-3 gap-4">
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 flex items-center gap-1"><UserCog className="w-3 h-3" /> Assign Driver</label>
+                <Input placeholder="Driver name" className="bg-secondary/50" value={busForm.driver} onChange={e => setBusForm(p => ({ ...p, driver: e.target.value }))} />
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 flex items-center gap-1"><UserCheck className="w-3 h-3" /> Assign Staff</label>
+                <Input placeholder="Staff name" className="bg-secondary/50" value={busForm.staff} onChange={e => setBusForm(p => ({ ...p, staff: e.target.value }))} />
+              </div>
+              <div>
+                <label className="text-xs text-muted-foreground mb-1 flex items-center gap-1"><ClipboardList className="w-3 h-3" /> Assign Supervisor</label>
+                <Input placeholder="Supervisor name" className="bg-secondary/50" value={busForm.supervisor} onChange={e => setBusForm(p => ({ ...p, supervisor: e.target.value }))} />
+              </div>
+            </div>
           </div>
           <DialogFooter>
             <Button variant="outline" onClick={() => setShowAddBus(false)}>Cancel</Button>
@@ -531,12 +573,28 @@ export default function AdminDashboard() {
             <DialogDescription>Register a driver to the Starline team.</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <div><label className="text-xs text-muted-foreground mb-1 block">Full Name</label><Input placeholder="e.g. Morshed Ali" className="bg-secondary/50" value={driverForm.name} onChange={e => setDriverForm(p => ({ ...p, name: e.target.value }))} /></div>
-              <div><label className="text-xs text-muted-foreground mb-1 block">Phone</label><Input placeholder="e.g. 01712000010" className="bg-secondary/50" value={driverForm.phone} onChange={e => setDriverForm(p => ({ ...p, phone: e.target.value }))} /></div>
+            {/* Driver Photo Upload */}
+            <div className="flex justify-center">
+              <label className="cursor-pointer group">
+                <div className="w-20 h-20 rounded-full bg-secondary/60 border-2 border-dashed border-border/60 flex items-center justify-center overflow-hidden group-hover:border-primary/50 transition-colors">
+                  {driverPhotoPreview ? (
+                    <img src={driverPhotoPreview} alt="Driver preview" className="w-full h-full object-cover" />
+                  ) : (
+                    <div className="flex flex-col items-center gap-1">
+                      <Camera className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+                      <span className="text-[10px] text-muted-foreground">Photo</span>
+                    </div>
+                  )}
+                </div>
+                <input type="file" accept="image/*" className="hidden" onChange={handleDriverPhotoChange} />
+              </label>
             </div>
             <div className="grid grid-cols-2 gap-4">
-              <div><label className="text-xs text-muted-foreground mb-1 block">License No</label><Input placeholder="e.g. DM-2026-001234" className="bg-secondary/50" value={driverForm.license} onChange={e => setDriverForm(p => ({ ...p, license: e.target.value }))} /></div>
+              <div><label className="text-xs text-muted-foreground mb-1 block">Full Name</label><Input placeholder="e.g. Morshed Ali" className="bg-secondary/50" value={driverForm.name} onChange={e => setDriverForm(p => ({ ...p, name: e.target.value }))} /></div>
+              <div><label className="text-xs text-muted-foreground mb-1 block">Phone Number</label><Input placeholder="e.g. 01712000010" className="bg-secondary/50" value={driverForm.phone} onChange={e => setDriverForm(p => ({ ...p, phone: e.target.value }))} /></div>
+            </div>
+            <div className="grid grid-cols-2 gap-4">
+              <div><label className="text-xs text-muted-foreground mb-1 block">License Number</label><Input placeholder="e.g. DM-2026-001234" className="bg-secondary/50" value={driverForm.license} onChange={e => setDriverForm(p => ({ ...p, license: e.target.value }))} /></div>
               <div><label className="text-xs text-muted-foreground mb-1 block">Experience</label><Input placeholder="e.g. 10 years" className="bg-secondary/50" value={driverForm.experience} onChange={e => setDriverForm(p => ({ ...p, experience: e.target.value }))} /></div>
             </div>
           </div>
