@@ -66,10 +66,10 @@ export const popularRoutes: Route[] = [
 ];
 
 export const coachTypes = [
-  { name: 'Starline Platinum', type: 'AC Sleeper', seats: 24, amenities: ['AC', 'WiFi', 'USB Charging', 'Blanket', 'Snacks', 'Entertainment'] },
-  { name: 'Starline Gold', type: 'AC Business', seats: 36, amenities: ['AC', 'USB Charging', 'Reclining Seats', 'Water'] },
-  { name: 'Starline Silver', type: 'AC Economy', seats: 40, amenities: ['AC', 'USB Charging', 'Water'] },
-  { name: 'Starline Express', type: 'Non-AC', seats: 44, amenities: ['Fan', 'Water'] },
+  { name: 'Starline Platinum', type: 'AC', seats: 36, amenities: ['AC', 'WiFi', 'USB Charging', 'Blanket', 'Snacks', 'Entertainment'] },
+  { name: 'Starline Gold', type: 'AC', seats: 40, amenities: ['AC', 'USB Charging', 'Reclining Seats', 'Water'] },
+  { name: 'Starline Silver', type: 'AC', seats: 41, amenities: ['AC', 'USB Charging', 'Water'] },
+  { name: 'Starline Express', type: 'Non-AC', seats: 40, amenities: ['Fan', 'Water'] },
 ];
 
 export function generateBusResults(from: string, to: string, date: string): BusResult[] {
