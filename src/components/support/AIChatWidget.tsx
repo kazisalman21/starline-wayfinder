@@ -133,11 +133,10 @@ export default function AIChatWidget() {
       setIsTyping(true);
       setTimeout(() => {
         setIsTyping(false);
-        const successId = String(Date.now() + Math.random());
-        addMsg({
+        setMessages((prev) => [...prev, {
           id: String(Date.now()), role: 'ai', time: now(), type: 'success',
           content: `✅ **Complaint Submitted Successfully!**\n\n🆔 **Complaint ID:** ${cid}\n👤 **Name:** ${updated.name}\n🚌 **Route:** ${updated.route}\n📋 **Category:** ${updated.category}\n⚡ **Priority:** ${updated.urgency}\n\nOur support team will review your complaint within **2 hours**. You can track it anytime using your complaint ID.\n\nIs there anything else I can help with?`,
-        });
+        }]);
       }, 1200);
       return;
     }
