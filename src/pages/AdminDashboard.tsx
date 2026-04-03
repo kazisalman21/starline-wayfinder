@@ -440,6 +440,12 @@ export default function AdminDashboard() {
       </div>
     ),
 
+    // ============= COMPLAINTS =============
+    complaints: <AdminComplaintsTab />,
+
+    // ============= ANALYTICS =============
+    analytics: <SupportAnalyticsTab />,
+
     // ============= SETTINGS =============
     settings: (
       <div className="space-y-6">
