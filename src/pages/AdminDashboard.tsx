@@ -18,9 +18,11 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import CounterManagementSection from '@/components/admin/CounterManagementSection';
 import RouteManagementSection from '@/components/admin/RouteManagementSection';
+import AdminComplaintsTab from '@/components/support/AdminComplaintsTab';
+import SupportAnalyticsTab from '@/components/support/SupportAnalyticsTab';
 
 // --- Admin Tab Types ---
-type AdminTab = 'overview' | 'fleet' | 'counters' | 'routes' | 'bookings' | 'drivers' | 'settings';
+type AdminTab = 'overview' | 'fleet' | 'counters' | 'routes' | 'bookings' | 'drivers' | 'complaints' | 'analytics' | 'settings';
 
 const adminTabs: { id: AdminTab; label: string; icon: typeof LayoutDashboard }[] = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -29,6 +31,8 @@ const adminTabs: { id: AdminTab; label: string; icon: typeof LayoutDashboard }[]
   { id: 'routes', label: 'Routes', icon: Route },
   { id: 'bookings', label: 'Bookings', icon: Ticket },
   { id: 'drivers', label: 'Drivers', icon: UserCog },
+  { id: 'complaints', label: 'Complaints', icon: AlertTriangle },
+  { id: 'analytics', label: 'Analytics', icon: TrendingUp },
   { id: 'settings', label: 'Settings', icon: Settings },
 ];
 
