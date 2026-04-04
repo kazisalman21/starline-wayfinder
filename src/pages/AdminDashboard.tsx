@@ -20,9 +20,10 @@ import CounterManagementSection from '@/components/admin/CounterManagementSectio
 import RouteManagementSection from '@/components/admin/RouteManagementSection';
 import AdminComplaintsTab from '@/components/support/AdminComplaintsTab';
 import SupportAnalyticsTab from '@/components/support/SupportAnalyticsTab';
+import AdminNoticesTab from '@/components/notices/AdminNoticesTab';
 
 // --- Admin Tab Types ---
-type AdminTab = 'overview' | 'fleet' | 'counters' | 'routes' | 'bookings' | 'drivers' | 'complaints' | 'analytics' | 'settings';
+type AdminTab = 'overview' | 'fleet' | 'counters' | 'routes' | 'bookings' | 'drivers' | 'notices' | 'complaints' | 'analytics' | 'settings';
 
 const adminTabs: { id: AdminTab; label: string; icon: typeof LayoutDashboard }[] = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
@@ -31,6 +32,7 @@ const adminTabs: { id: AdminTab; label: string; icon: typeof LayoutDashboard }[]
   { id: 'routes', label: 'Routes', icon: Route },
   { id: 'bookings', label: 'Bookings', icon: Ticket },
   { id: 'drivers', label: 'Drivers', icon: UserCog },
+  { id: 'notices', label: 'Notices', icon: ClipboardList },
   { id: 'complaints', label: 'Complaints', icon: AlertTriangle },
   { id: 'analytics', label: 'Analytics', icon: TrendingUp },
   { id: 'settings', label: 'Settings', icon: Settings },
@@ -439,6 +441,9 @@ export default function AdminDashboard() {
         </div>
       </div>
     ),
+
+    // ============= NOTICES =============
+    notices: <AdminNoticesTab />,
 
     // ============= COMPLAINTS =============
     complaints: <AdminComplaintsTab />,

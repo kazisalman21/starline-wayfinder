@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Shield, Clock, MapPin, CreditCard, ChevronRight, Bus, Navigation, Ticket } from 'lucide-react';
+import { Shield, Clock, MapPin, CreditCard, ChevronRight, Bus, Navigation, Ticket, Bell } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AnimatedHero from '@/components/AnimatedHero';
+import AnnouncementBar from '@/components/notices/AnnouncementBar';
+import TravelUpdateCard from '@/components/notices/TravelUpdateCard';
+import { useNoticeStore, getHomepageNotices } from '@/data/noticeData';
 import { popularRoutes } from '@/data/mockData';
 
 const features = [
@@ -23,8 +26,12 @@ const trustItems = [
 ];
 
 export default function LandingPage() {
+  const { notices } = useNoticeStore();
+  const homepageNotices = getHomepageNotices(notices).slice(0, 6);
+
   return (
     <div className="min-h-screen bg-background">
+      <AnnouncementBar />
       <Navbar />
       <AnimatedHero />
 
@@ -125,6 +132,29 @@ export default function LandingPage() {
           </div>
         </div>
       </section>
+
+      {/* Travel Updates */}
+      {homepageNotices.length > 0 && (
+        <section className="section-spacing">
+          <div className="container">
+            <div className="flex items-end justify-between mb-10">
+              <div>
+                <span className="text-xs font-semibold tracking-widest text-accent uppercase mb-3 block">Stay Informed</span>
+                <h2 className="font-display text-3xl font-bold">Travel Updates</h2>
+                <p className="text-sm text-muted-foreground mt-2">Service alerts, route advisories, and important notices</p>
+              </div>
+              <Link to="/notices" className="text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-1 transition-colors">
+                All updates <ChevronRight className="w-4 h-4" />
+              </Link>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {homepageNotices.map((n, i) => (
+                <TravelUpdateCard key={n.id} notice={n} index={i} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* CTA */}
       <section className="section-spacing">

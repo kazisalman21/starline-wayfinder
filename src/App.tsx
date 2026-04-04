@@ -18,6 +18,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import PassengerDashboard from "./pages/PassengerDashboard.tsx";
 import MyComplaints from "./pages/MyComplaints.tsx";
+import TravelUpdates from "./pages/TravelUpdates.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AIChatWidget from "./components/support/AIChatWidget.tsx";
 
@@ -44,6 +45,8 @@ const App = () => (
           <Route path="/privacy" element={<PrivacyPolicy />} />
           <Route path="/dashboard" element={<PassengerDashboard />} />
           <Route path="/my-complaints" element={<MyComplaints />} />
+          <Route path="/notices" element={<TravelUpdates />} />
+          <Route path="/notices/:id" element={<TravelUpdates />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>

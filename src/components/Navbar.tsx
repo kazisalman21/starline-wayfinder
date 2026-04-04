@@ -11,6 +11,7 @@ const navLinks = [
   { to: '/counters', label: 'Counters' },
   { to: '/manage-booking', label: 'My Booking' },
   { to: '/live-tracking', label: 'Live Tracking' },
+  { to: '/notices', label: 'Updates' },
   { to: '/support', label: 'Support' },
 ];
 

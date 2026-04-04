@@ -5,6 +5,9 @@ import { Clock, MapPin, Users, Wifi, Snowflake, Zap, ChevronRight, Filter, Arrow
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SearchForm from '@/components/SearchForm';
+import AnnouncementBar from '@/components/notices/AnnouncementBar';
+import BookingNoticeInline from '@/components/notices/BookingNoticeInline';
+import { useNoticeStore, getBookingFlowNotices } from '@/data/noticeData';
 import { generateBusResults, BusResult } from '@/data/mockData';
 
 const amenityIcons: Record<string, typeof Wifi> = {
@@ -21,6 +24,9 @@ export default function SearchResults() {
 
   const [sortBy, setSortBy] = useState<'price' | 'departure' | 'duration'>('departure');
   const [filterType, setFilterType] = useState<string>('all');
+  const { notices } = useNoticeStore();
+  const routeStr = `${from} → ${to}`;
+  const bookingNotices = getBookingFlowNotices(notices, routeStr);
 
   const results = useMemo(() => generateBusResults(from, to, date), [from, to, date]);
 
@@ -37,10 +43,17 @@ export default function SearchResults() {
 
   return (
     <div className="min-h-screen bg-background">
+      <AnnouncementBar />
       <Navbar />
       <div className="pt-20 pb-12">
         <div className="container">
           <SearchForm variant="compact" initialFrom={from} initialTo={to} initialDate={date} />
+
+          {bookingNotices.length > 0 && (
+            <div className="mt-6">
+              <BookingNoticeInline notices={bookingNotices} />
+            </div>
+          )}
 
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mt-8 mb-6">
             <div>
