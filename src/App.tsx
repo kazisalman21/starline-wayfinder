@@ -18,6 +18,7 @@ import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import AdminDashboard from "./pages/AdminDashboard.tsx";
 import PassengerDashboard from "./pages/PassengerDashboard.tsx";
 import MyComplaints from "./pages/MyComplaints.tsx";
+import TravelUpdates from "./pages/TravelUpdates.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AIChatWidget from "./components/support/AIChatWidget.tsx";
 
