@@ -27,7 +27,6 @@ export default function SearchResults() {
   const { notices } = useNoticeStore();
   const routeStr = `${from} → ${to}`;
   const bookingNotices = getBookingFlowNotices(notices, routeStr);
-  const [filterType, setFilterType] = useState<string>('all');
 
   const results = useMemo(() => generateBusResults(from, to, date), [from, to, date]);
 
