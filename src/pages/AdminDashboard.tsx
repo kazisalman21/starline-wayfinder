@@ -23,7 +23,7 @@ import SupportAnalyticsTab from '@/components/support/SupportAnalyticsTab';
 import AdminNoticesTab from '@/components/notices/AdminNoticesTab';
 
 // --- Admin Tab Types ---
-type AdminTab = 'overview' | 'fleet' | 'counters' | 'routes' | 'bookings' | 'drivers' | 'complaints' | 'analytics' | 'settings';
+type AdminTab = 'overview' | 'fleet' | 'counters' | 'routes' | 'bookings' | 'drivers' | 'notices' | 'complaints' | 'analytics' | 'settings';
 
 const adminTabs: { id: AdminTab; label: string; icon: typeof LayoutDashboard }[] = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
