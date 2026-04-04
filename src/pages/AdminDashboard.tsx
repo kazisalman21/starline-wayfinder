@@ -20,6 +20,7 @@ import CounterManagementSection from '@/components/admin/CounterManagementSectio
 import RouteManagementSection from '@/components/admin/RouteManagementSection';
 import AdminComplaintsTab from '@/components/support/AdminComplaintsTab';
 import SupportAnalyticsTab from '@/components/support/SupportAnalyticsTab';
+import AdminNoticesTab from '@/components/notices/AdminNoticesTab';
 
 // --- Admin Tab Types ---
 type AdminTab = 'overview' | 'fleet' | 'counters' | 'routes' | 'bookings' | 'drivers' | 'complaints' | 'analytics' | 'settings';
