@@ -32,6 +32,7 @@ const adminTabs: { id: AdminTab; label: string; icon: typeof LayoutDashboard }[]
   { id: 'routes', label: 'Routes', icon: Route },
   { id: 'bookings', label: 'Bookings', icon: Ticket },
   { id: 'drivers', label: 'Drivers', icon: UserCog },
+  { id: 'notices', label: 'Notices', icon: ClipboardList },
   { id: 'complaints', label: 'Complaints', icon: AlertTriangle },
   { id: 'analytics', label: 'Analytics', icon: TrendingUp },
   { id: 'settings', label: 'Settings', icon: Settings },
