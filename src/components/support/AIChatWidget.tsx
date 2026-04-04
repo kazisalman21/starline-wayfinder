@@ -1,8 +1,8 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
-  MessageCircle, X, Send, Paperclip, Mic, Headphones, ChevronDown,
-  Bot, User, Clock, CheckCheck, AlertTriangle, Copy, Download, Calendar,
+  X, Send, Paperclip, Mic, Headphones, ChevronDown,
+  User, Clock, CheckCheck, AlertTriangle, Copy, Download,
 } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -10,6 +10,7 @@ import {
   complaintCategories, starlineRoutes, starlineCounters,
   useSupportStore, type ComplaintCategory,
 } from '@/data/supportData';
+import AIConciergeAvatar from './AIConciergeAvatar';
 
 interface Message {
   id: string;
@@ -58,7 +59,8 @@ export default function AIChatWidget() {
     if (isOpen && messages.length === 0) {
       setMessages([
         {
-          id: '0', role: 'ai', content: 'Assalamu Alaikum! 👋 Welcome to **Star Line Care**. I\'m your AI support assistant. How can I help you today?',
+          id: '0', role: 'ai',
+          content: "Assalamu Alaikum! 👋 I'm your **Star Line Care** assistant. I'm here to help with bookings, payments, route info, delays, refunds, and complaints. How can I assist you today?",
           time: now(), type: 'text',
         },
         {
@@ -102,7 +104,6 @@ export default function AIChatWidget() {
     addMsg({ role: 'user', content: value, time: now() });
 
     if (step.key === 'confirm') {
-      // Submit complaint
       const cid = `STC-${2050 + Math.floor(Math.random() * 100)}`;
       const complaint = {
         id: String(Date.now()),
@@ -192,15 +193,15 @@ export default function AIChatWidget() {
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0, opacity: 0 }}
             onClick={() => setIsOpen(true)}
-            className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 px-5 py-3.5 rounded-2xl text-primary-foreground font-medium text-sm shadow-2xl"
+            className="fixed bottom-6 right-6 z-50 flex items-center gap-2.5 pl-1.5 pr-5 py-1.5 rounded-full text-primary-foreground font-medium text-sm shadow-2xl group"
             style={{
               background: 'linear-gradient(135deg, hsl(355 70% 42%), hsl(355 75% 34%))',
               boxShadow: '0 0 30px hsl(355 70% 42% / 0.4), 0 8px 32px hsl(0 0% 0% / 0.5)',
             }}
           >
             <div className="relative">
-              <MessageCircle className="w-5 h-5" />
-              <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-400 rounded-full animate-pulse" />
+              <AIConciergeAvatar size="xs" className="group-hover:scale-105 transition-transform" />
+              <span className="absolute -bottom-0.5 -right-0.5 w-2.5 h-2.5 bg-green-400 rounded-full border-2 border-primary animate-pulse" />
             </div>
             <span className="hidden sm:inline">Star Line Care</span>
           </motion.button>
@@ -225,16 +226,10 @@ export default function AIChatWidget() {
             <div className="flex items-center justify-between px-5 py-4 border-b border-border/30"
               style={{ background: 'linear-gradient(135deg, hsl(220 24% 9%) 0%, hsl(220 28% 7%) 100%)' }}>
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl flex items-center justify-center"
-                  style={{ background: 'linear-gradient(135deg, hsl(355 70% 42%), hsl(355 75% 34%))' }}>
-                  <Bot className="w-5 h-5 text-white" />
-                </div>
+                <AIConciergeAvatar size="sm" glow online />
                 <div>
                   <h3 className="font-display font-bold text-sm text-foreground">Star Line Care</h3>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 bg-green-400 rounded-full" />
-                    <span className="text-xs text-green-400">Online now</span>
-                  </div>
+                  <span className="text-xs text-muted-foreground">AI Customer Support</span>
                 </div>
               </div>
               <div className="flex items-center gap-1">
@@ -252,12 +247,9 @@ export default function AIChatWidget() {
               {messages.map((msg) => (
                 <div key={msg.id} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
                   {msg.role === 'ai' && (
-                    <div className="w-7 h-7 rounded-lg flex items-center justify-center mr-2 mt-1 flex-shrink-0"
-                      style={{ background: 'hsl(355 70% 42% / 0.15)' }}>
-                      <Bot className="w-3.5 h-3.5 text-primary" />
-                    </div>
+                    <AIConciergeAvatar size="xs" className="mr-2 mt-1" />
                   )}
-                  <div className={`max-w-[80%] ${msg.role === 'user' ? '' : ''}`}>
+                  <div className="max-w-[80%]">
                     {msg.type === 'chips' && msg.chips ? (
                       <div className="flex flex-wrap gap-2">
                         {msg.chips.map((chip) => (
@@ -314,10 +306,7 @@ export default function AIChatWidget() {
               {/* Typing indicator */}
               {isTyping && (
                 <div className="flex items-center gap-2">
-                  <div className="w-7 h-7 rounded-lg flex items-center justify-center flex-shrink-0"
-                    style={{ background: 'hsl(355 70% 42% / 0.15)' }}>
-                    <Bot className="w-3.5 h-3.5 text-primary" />
-                  </div>
+                  <AIConciergeAvatar size="xs" />
                   <div className="bg-card/80 border border-border/30 rounded-2xl rounded-bl-md px-4 py-3">
                     <div className="flex items-center gap-1.5">
                       <span className="w-2 h-2 rounded-full bg-muted-foreground/50 animate-bounce" style={{ animationDelay: '0ms' }} />
@@ -354,14 +343,17 @@ export default function AIChatWidget() {
 
             {/* Complaint Progress */}
             {complaintStep >= 0 && complaintStep < complaintSteps.length && (
-              <div className="px-4 py-2 border-t border-border/20">
-                <div className="flex items-center gap-2 mb-1">
-                  <AlertTriangle className="w-3 h-3 text-accent" />
-                  <span className="text-[10px] text-accent font-medium">Filing Complaint</span>
-                  <span className="text-[10px] text-muted-foreground ml-auto">{complaintStep + 1}/{complaintSteps.length}</span>
-                </div>
-                <div className="w-full bg-secondary/40 rounded-full h-1">
-                  <div className="bg-accent h-1 rounded-full transition-all" style={{ width: `${((complaintStep + 1) / complaintSteps.length) * 100}%` }} />
+              <div className="px-4 py-2 border-t border-border/20 flex items-center gap-3">
+                <AIConciergeAvatar size="xs" />
+                <div className="flex-1">
+                  <div className="flex items-center gap-2 mb-1">
+                    <AlertTriangle className="w-3 h-3 text-accent" />
+                    <span className="text-[10px] text-accent font-medium">Filing Complaint</span>
+                    <span className="text-[10px] text-muted-foreground ml-auto">{complaintStep + 1}/{complaintSteps.length}</span>
+                  </div>
+                  <div className="w-full bg-secondary/40 rounded-full h-1">
+                    <div className="bg-accent h-1 rounded-full transition-all" style={{ width: `${((complaintStep + 1) / complaintSteps.length) * 100}%` }} />
+                  </div>
                 </div>
               </div>
             )}
