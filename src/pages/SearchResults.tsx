@@ -44,10 +44,17 @@ export default function SearchResults() {
 
   return (
     <div className="min-h-screen bg-background">
+      <AnnouncementBar />
       <Navbar />
       <div className="pt-20 pb-12">
         <div className="container">
           <SearchForm variant="compact" initialFrom={from} initialTo={to} initialDate={date} />
+
+          {bookingNotices.length > 0 && (
+            <div className="mt-6">
+              <BookingNoticeInline notices={bookingNotices} />
+            </div>
+          )}
 
           <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-4 mt-8 mb-6">
             <div>
