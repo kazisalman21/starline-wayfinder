@@ -5,6 +5,9 @@ import { Clock, MapPin, Users, Wifi, Snowflake, Zap, ChevronRight, Filter, Arrow
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import SearchForm from '@/components/SearchForm';
+import AnnouncementBar from '@/components/notices/AnnouncementBar';
+import BookingNoticeInline from '@/components/notices/BookingNoticeInline';
+import { useNoticeStore, getBookingFlowNotices } from '@/data/noticeData';
 import { generateBusResults, BusResult } from '@/data/mockData';
 
 const amenityIcons: Record<string, typeof Wifi> = {
