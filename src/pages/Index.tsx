@@ -26,8 +26,12 @@ const trustItems = [
 ];
 
 export default function LandingPage() {
+  const { notices } = useNoticeStore();
+  const homepageNotices = getHomepageNotices(notices).slice(0, 6);
+
   return (
     <div className="min-h-screen bg-background">
+      <AnnouncementBar />
       <Navbar />
       <AnimatedHero />
 
