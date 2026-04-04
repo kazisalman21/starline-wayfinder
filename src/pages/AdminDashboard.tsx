@@ -442,6 +442,9 @@ export default function AdminDashboard() {
       </div>
     ),
 
+    // ============= NOTICES =============
+    notices: <AdminNoticesTab />,
+
     // ============= COMPLAINTS =============
     complaints: <AdminComplaintsTab />,
 
