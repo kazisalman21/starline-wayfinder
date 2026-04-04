@@ -1,9 +1,12 @@
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Shield, Clock, MapPin, CreditCard, ChevronRight, Bus, Navigation, Ticket } from 'lucide-react';
+import { Shield, Clock, MapPin, CreditCard, ChevronRight, Bus, Navigation, Ticket, Bell } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AnimatedHero from '@/components/AnimatedHero';
+import AnnouncementBar from '@/components/notices/AnnouncementBar';
+import TravelUpdateCard from '@/components/notices/TravelUpdateCard';
+import { useNoticeStore, getHomepageNotices } from '@/data/noticeData';
 import { popularRoutes } from '@/data/mockData';
 
 const features = [
