@@ -24,6 +24,10 @@ export default function SearchResults() {
 
   const [sortBy, setSortBy] = useState<'price' | 'departure' | 'duration'>('departure');
   const [filterType, setFilterType] = useState<string>('all');
+  const { notices } = useNoticeStore();
+  const routeStr = `${from} → ${to}`;
+  const bookingNotices = getBookingFlowNotices(notices, routeStr);
+  const [filterType, setFilterType] = useState<string>('all');
 
   const results = useMemo(() => generateBusResults(from, to, date), [from, to, date]);
 
