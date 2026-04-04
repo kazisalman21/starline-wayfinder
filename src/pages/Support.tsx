@@ -4,13 +4,14 @@ import { motion } from 'framer-motion';
 import {
   Search, Phone, Mail, MessageCircle, Headphones, AlertTriangle,
   ChevronDown, HelpCircle, MapPin, CreditCard, RefreshCw, ArrowLeftRight,
-  Ticket, Bot, Shield, Clock, ExternalLink,
+  Ticket, Shield, Clock,
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { supportFaqs, supportCategories } from '@/data/supportData';
+import AIConciergeAvatar from '@/components/support/AIConciergeAvatar';
 
 const iconMap: Record<string, typeof Ticket> = {
   Ticket, MapPin, CreditCard, RefreshCw, ArrowLeftRight, Search: Search,
@@ -41,32 +42,55 @@ export default function Support() {
     <div className="min-h-screen bg-background">
       <Navbar />
 
-      {/* Hero Section */}
+      {/* Hero Section with Avatar */}
       <div className="pt-20">
         <div className="relative overflow-hidden">
           <div className="absolute inset-0" style={{ background: 'radial-gradient(ellipse at center top, hsl(355 70% 42% / 0.08) 0%, transparent 60%)' }} />
-          <div className="container max-w-4xl relative py-16 md:py-24 text-center">
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }}>
-              <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium mb-6">
-                <Bot className="w-3.5 h-3.5" />
-                AI-Powered Support • Available 24/7
-              </div>
-              <h1 className="font-display text-3xl md:text-5xl font-bold mb-4 leading-tight">
-                How can we <span className="text-gradient-primary">help you</span> today?
-              </h1>
-              <p className="text-muted-foreground text-base md:text-lg max-w-xl mx-auto mb-8">
-                Get instant answers, track your issues, or connect with our support team
-              </p>
-              <div className="max-w-lg mx-auto relative">
-                <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
-                <Input
-                  placeholder="Search for help topics, routes, bookings..."
-                  className="pl-12 h-13 text-base bg-card/80 border-border/40 rounded-2xl"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                />
-              </div>
-            </motion.div>
+          <div className="container max-w-5xl relative py-16 md:py-24">
+            <div className="flex flex-col md:flex-row items-center gap-10 md:gap-16">
+              {/* Text Content */}
+              <motion.div initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="flex-1 text-center md:text-left">
+                <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full border border-primary/20 bg-primary/5 text-primary text-xs font-medium mb-6">
+                  <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                  AI-Powered Support • Available 24/7
+                </div>
+                <h1 className="font-display text-3xl md:text-5xl font-bold mb-4 leading-tight">
+                  How can we <span className="text-gradient-primary">help you</span> today?
+                </h1>
+                <p className="text-muted-foreground text-base md:text-lg max-w-xl mb-8">
+                  Get instant answers, track your issues, or connect with our support team
+                </p>
+                <div className="max-w-lg relative">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-muted-foreground" />
+                  <Input
+                    placeholder="Search for help topics, routes, bookings..."
+                    className="pl-12 h-13 text-base bg-card/80 border-border/40 rounded-2xl"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                  />
+                </div>
+              </motion.div>
+
+              {/* Avatar Portrait Card */}
+              <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} transition={{ delay: 0.2 }}
+                className="flex-shrink-0">
+                <div className="relative p-1 rounded-3xl"
+                  style={{
+                    background: 'linear-gradient(135deg, hsl(355 70% 42% / 0.3), hsl(45 100% 49% / 0.15), transparent)',
+                    boxShadow: '0 0 40px hsl(355 70% 42% / 0.15)',
+                  }}>
+                  <div className="glass-card p-6 rounded-[22px] text-center">
+                    <AIConciergeAvatar size="hero" glow className="mx-auto mb-4" />
+                    <h3 className="font-display font-bold text-foreground text-sm">Star Line Care</h3>
+                    <p className="text-xs text-muted-foreground mt-1">AI Customer Support</p>
+                    <div className="flex items-center justify-center gap-1.5 mt-2">
+                      <span className="w-2 h-2 bg-green-400 rounded-full animate-pulse" />
+                      <span className="text-[11px] text-green-400 font-medium">Online now</span>
+                    </div>
+                  </div>
+                </div>
+              </motion.div>
+            </div>
           </div>
         </div>
       </div>
@@ -75,25 +99,26 @@ export default function Support() {
 
         {/* AI Support CTA */}
         <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className="glass-card-elevated p-8 md:p-10 text-center border-glow">
-          <div className="w-16 h-16 rounded-2xl mx-auto mb-5 flex items-center justify-center"
-            style={{ background: 'linear-gradient(135deg, hsl(355 70% 42%), hsl(355 75% 34%))' }}>
-            <Bot className="w-8 h-8 text-white" />
+          className="glass-card-elevated p-8 md:p-10 border-glow">
+          <div className="flex flex-col md:flex-row items-center gap-6 md:gap-8">
+            <AIConciergeAvatar size="lg" glow online className="flex-shrink-0" />
+            <div className="text-center md:text-left flex-1">
+              <h2 className="font-display text-xl md:text-2xl font-bold mb-2">Star Line AI Care</h2>
+              <p className="text-muted-foreground text-sm mb-4 max-w-md">
+                Hello, I'm your Star Line Care assistant. I'm here to help with booking, payment, route information, delays, refunds, and complaints.
+              </p>
+              <div className="flex flex-wrap justify-center md:justify-start gap-2 mb-4">
+                {['Track booking', 'Refund status', 'File complaint', 'Route info', 'Counter hours'].map((chip) => (
+                  <span key={chip} className="px-3 py-1.5 rounded-full text-xs border border-border/40 text-muted-foreground">
+                    {chip}
+                  </span>
+                ))}
+              </div>
+              <p className="text-xs text-muted-foreground">
+                Click the <strong className="text-primary">Star Line Care</strong> button at the bottom right to start chatting
+              </p>
+            </div>
           </div>
-          <h2 className="font-display text-xl md:text-2xl font-bold mb-2">Star Line AI Care</h2>
-          <p className="text-muted-foreground text-sm mb-6 max-w-md mx-auto">
-            Get instant help with bookings, refunds, routes, complaints, and more — powered by AI
-          </p>
-          <div className="flex flex-wrap justify-center gap-2 mb-6">
-            {['Track booking', 'Refund status', 'File complaint', 'Route info', 'Counter hours'].map((chip) => (
-              <span key={chip} className="px-3 py-1.5 rounded-full text-xs border border-border/40 text-muted-foreground">
-                {chip}
-              </span>
-            ))}
-          </div>
-          <p className="text-xs text-muted-foreground">
-            Click the <strong className="text-primary">Star Line Care</strong> button at the bottom right to start chatting
-          </p>
         </motion.div>
 
         {/* Contact Cards */}

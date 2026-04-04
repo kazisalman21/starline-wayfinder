@@ -1,8 +1,8 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import {
-  Search, Filter, ChevronRight, Clock, AlertTriangle, CheckCircle2,
-  Eye, MessageCircle, Calendar, MapPin, Phone, Mail, ArrowUpRight,
+  Search, ChevronRight, Clock, AlertTriangle, CheckCircle2,
+  MessageCircle, Calendar, MapPin,
 } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import { useSupportStore, complaintStatuses, type Complaint, type ComplaintStatus } from '@/data/supportData';
+import AIConciergeAvatar from '@/components/support/AIConciergeAvatar';
 
 const statusStyle: Record<ComplaintStatus, string> = {
   'Submitted': 'bg-blue-500/15 text-blue-400',
@@ -79,8 +80,9 @@ export default function MyComplaints() {
           <div className="space-y-3">
             {filtered.length === 0 && (
               <div className="glass-card p-12 text-center">
-                <AlertTriangle className="w-8 h-8 text-muted-foreground mx-auto mb-3" />
-                <p className="text-sm text-muted-foreground">No complaints found</p>
+                <AIConciergeAvatar size="md" glow className="mx-auto mb-4" />
+                <p className="text-sm font-medium text-foreground mb-1">No complaints found</p>
+                <p className="text-xs text-muted-foreground">Need help? I'm here to assist you with any issues.</p>
               </div>
             )}
             {filtered.map((c, i) => (
@@ -145,6 +147,17 @@ export default function MyComplaints() {
                   <h4 className="text-xs text-muted-foreground mb-2 uppercase tracking-wider">Complaint Details</h4>
                   <p className="text-sm leading-relaxed">{selected.details}</p>
                 </div>
+
+                {/* AI Summary */}
+                {selected.aiSummary && (
+                  <div className="bg-primary/5 border border-primary/15 rounded-xl p-4 flex items-start gap-3">
+                    <AIConciergeAvatar size="xs" />
+                    <div>
+                      <h4 className="text-xs text-primary mb-1 font-medium">AI Summary</h4>
+                      <p className="text-sm text-muted-foreground">{selected.aiSummary}</p>
+                    </div>
+                  </div>
+                )}
 
                 {/* Timeline */}
                 <div>
