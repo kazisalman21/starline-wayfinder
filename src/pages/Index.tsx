@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import { Shield, Clock, MapPin, CreditCard, ChevronRight, Bus, Navigation, Ticket, Bell } from 'lucide-react';
@@ -6,7 +7,8 @@ import Footer from '@/components/Footer';
 import AnimatedHero from '@/components/AnimatedHero';
 import AnnouncementBar from '@/components/notices/AnnouncementBar';
 import TravelUpdateCard from '@/components/notices/TravelUpdateCard';
-import { useNoticeStore, getHomepageNotices } from '@/data/noticeData';
+import NoticeDetailDrawer from '@/components/notices/NoticeDetailDrawer';
+import { useNoticeStore, getHomepageNotices, type Notice } from '@/data/noticeData';
 import { popularRoutes } from '@/data/mockData';
 
 const features = [
@@ -27,7 +29,8 @@ const trustItems = [
 
 export default function LandingPage() {
   const { notices } = useNoticeStore();
-  const homepageNotices = getHomepageNotices(notices).slice(0, 6);
+  const homepageNotices = getHomepageNotices(notices).slice(0, 4);
+  const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null);
 
   return (
     <div className="min-h-screen bg-background">
@@ -133,28 +136,30 @@ export default function LandingPage() {
         </div>
       </section>
 
-      {/* Travel Updates */}
+      {/* Travel Updates & Notices */}
       {homepageNotices.length > 0 && (
         <section className="section-spacing">
           <div className="container">
             <div className="flex items-end justify-between mb-10">
               <div>
                 <span className="text-xs font-semibold tracking-widest text-accent uppercase mb-3 block">Stay Informed</span>
-                <h2 className="font-display text-3xl font-bold">Travel Updates</h2>
+                <h2 className="font-display text-3xl font-bold">Travel Updates & Notices</h2>
                 <p className="text-sm text-muted-foreground mt-2">Service alerts, route advisories, and important notices</p>
               </div>
               <Link to="/notices" className="text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-1 transition-colors">
-                All updates <ChevronRight className="w-4 h-4" />
+                View all notices <ChevronRight className="w-4 h-4" />
               </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               {homepageNotices.map((n, i) => (
-                <TravelUpdateCard key={n.id} notice={n} index={i} />
+                <TravelUpdateCard key={n.id} notice={n} index={i} onClick={setSelectedNotice} />
               ))}
             </div>
           </div>
         </section>
       )}
+
+      <NoticeDetailDrawer notice={selectedNotice} onClose={() => setSelectedNotice(null)} />
 
       {/* CTA */}
       <section className="section-spacing">
