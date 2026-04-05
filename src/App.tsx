@@ -46,7 +46,6 @@ const App = () => (
           <Route path="/dashboard" element={<PassengerDashboard />} />
           <Route path="/my-complaints" element={<MyComplaints />} />
           <Route path="/notices" element={<TravelUpdates />} />
-          <Route path="/notices/:id" element={<TravelUpdates />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
