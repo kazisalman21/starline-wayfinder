@@ -186,6 +186,13 @@ export function getHomepageNotices(notices: Notice[]): Notice[] {
     .sort((a, b) => (a.isPinned === b.isPinned ? 0 : a.isPinned ? -1 : 1));
 }
 
+export function getBookingFlowNotices(notices: Notice[], route?: string): Notice[] {
+  return getActiveNotices(notices).filter((n) => {
+    if (!route) return true;
+    return !n.route || n.route === route;
+  });
+}
+
 export function sortByPriority(notices: Notice[]): Notice[] {
   const order: Record<NoticePriority, number> = { critical: 0, high: 1, normal: 2 };
   return [...notices].sort((a, b) => {

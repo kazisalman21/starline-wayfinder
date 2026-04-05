@@ -6,7 +6,8 @@ import Footer from '@/components/Footer';
 import AnimatedHero from '@/components/AnimatedHero';
 import AnnouncementBar from '@/components/notices/AnnouncementBar';
 import TravelUpdateCard from '@/components/notices/TravelUpdateCard';
-import { useNoticeStore, getHomepageNotices } from '@/data/noticeData';
+import NoticeDetailDrawer from '@/components/notices/NoticeDetailDrawer';
+import { useNoticeStore, getHomepageNotices, type Notice } from '@/data/noticeData';
 import { popularRoutes } from '@/data/mockData';
 
 const features = [
