@@ -1,19 +1,20 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
-import { Shield, Clock, MapPin, CreditCard, ChevronRight, Bus, Navigation, Ticket, Bell } from 'lucide-react';
+import { Shield, Clock, MapPin, CreditCard, ChevronRight, Bus, Navigation, Ticket, Snowflake, Armchair } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import AnimatedHero from '@/components/AnimatedHero';
+import SearchForm from '@/components/SearchForm';
 import AnnouncementBar from '@/components/notices/AnnouncementBar';
 import TravelUpdateCard from '@/components/notices/TravelUpdateCard';
 import NoticeDetailDrawer from '@/components/notices/NoticeDetailDrawer';
 import { useNoticeStore, getHomepageNotices, type Notice } from '@/data/noticeData';
-import { popularRoutes } from '@/data/mockData';
+import { popularRoutes, coachTypes } from '@/data/mockData';
 
 const features = [
   { icon: Navigation, title: 'Live Tracking', desc: 'Track your coach in real-time from departure to destination' },
-  { icon: Bus, title: 'Premium Fleet', desc: 'AC Sleeper, Business & Economy with modern amenities' },
+  { icon: Bus, title: 'Premium Fleet', desc: 'AC & Non-AC coaches with modern amenities and trained drivers' },
   { icon: MapPin, title: 'Seat Selection', desc: 'Choose your preferred seat with interactive coach maps' },
   { icon: CreditCard, title: 'Easy Payments', desc: 'Pay with bKash, Nagad, card, or at counter' },
   { icon: Clock, title: 'On-Time Promise', desc: '94% on-time performance across all routes' },
@@ -107,7 +108,7 @@ export default function LandingPage() {
             </Link>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {popularRoutes.slice(0, 8).map((route, i) => (
               <motion.div
                 key={route.id}
@@ -117,17 +118,21 @@ export default function LandingPage() {
                 transition={{ delay: i * 0.05 }}
               >
                 <Link
-                  to={`/search?from=${encodeURIComponent(route.from)}&to=${encodeURIComponent(route.to)}&date=2026-03-25&passengers=1`}
+                  to={`/search?from=${encodeURIComponent(route.from)}&to=${encodeURIComponent(route.to)}&date=2026-04-08&passengers=1`}
                   className="glass-card p-5 block card-hover group"
                 >
                   <div className="flex items-center gap-2 mb-3">
-                    <span className="font-display font-semibold">{route.from}</span>
+                    <span className="font-display font-semibold text-sm">{route.from}</span>
                     <ChevronRight className="w-4 h-4 text-primary flex-shrink-0" />
-                    <span className="font-display font-semibold">{route.to}</span>
+                    <span className="font-display font-semibold text-sm">{route.to}</span>
                   </div>
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-muted-foreground">{route.duration}</span>
-                    <span className="text-accent font-bold">৳{route.basePrice}+</span>
+                  <div className="flex items-center justify-between text-xs mb-1">
+                    <span className="text-muted-foreground flex items-center gap-1"><Clock className="w-3 h-3" /> {route.duration}</span>
+                    <span className="text-muted-foreground">{route.distance}</span>
+                  </div>
+                  <div className="flex items-center justify-between text-xs mt-2">
+                    <span className="text-muted-foreground">Non-AC ৳{route.basePrice}</span>
+                    <span className="text-accent font-bold">AC ৳{route.acPrice}</span>
                   </div>
                 </Link>
               </motion.div>
@@ -136,9 +141,60 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* Fleet Preview */}
+      <section className="section-spacing">
+        <div className="container">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <span className="text-xs font-semibold tracking-widest text-accent uppercase mb-3 block">Fleet</span>
+              <h2 className="font-display text-3xl font-bold">Our Coaches</h2>
+            </div>
+            <Link to="/routes" className="text-sm font-medium text-primary hover:text-primary/80 flex items-center gap-1 transition-colors">
+              View fleet <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+            {coachTypes.map((coach, i) => (
+              <motion.div
+                key={i}
+                initial={{ opacity: 0, y: 15 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: i * 0.08 }}
+                className="glass-card p-5 card-hover"
+              >
+                <div className="flex items-center gap-3 mb-3">
+                  <div className="w-10 h-10 rounded-xl bg-secondary/60 flex items-center justify-center">
+                    <Bus className="w-5 h-5 text-primary/60" />
+                  </div>
+                  <div>
+                    <h4 className="font-display font-semibold text-sm">{coach.name}</h4>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span className={`px-1.5 py-0.5 rounded text-[10px] font-medium ${
+                        coach.type === 'AC' ? 'bg-primary/10 text-primary' : 'bg-secondary text-muted-foreground'
+                      }`}>{coach.type}</span>
+                      <span>{coach.seats} seats</span>
+                    </div>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-1.5">
+                  {coach.amenities.slice(0, 3).map(a => (
+                    <span key={a} className="text-[10px] bg-secondary/60 px-2 py-1 rounded-md text-muted-foreground">{a}</span>
+                  ))}
+                  {coach.amenities.length > 3 && (
+                    <span className="text-[10px] bg-secondary/60 px-2 py-1 rounded-md text-muted-foreground">+{coach.amenities.length - 3}</span>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Travel Updates & Notices */}
       {homepageNotices.length > 0 && (
-        <section className="section-spacing">
+        <section className="section-spacing bg-card/20">
           <div className="container">
             <div className="flex items-end justify-between mb-10">
               <div>
