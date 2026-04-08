@@ -1,25 +1,27 @@
 import { useSearchParams, Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { CheckCircle2, Download, Headphones, QrCode, Bus, MapPin, Clock, User, CreditCard, ChevronRight, Ticket } from 'lucide-react';
+import { CheckCircle2, Download, Headphones, QrCode, Bus, CreditCard, ChevronRight, Ticket, Shield, Clock, MapPin, Phone, AlertCircle, Navigation } from 'lucide-react';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 export default function TicketConfirmation() {
   const [params] = useSearchParams();
   const bookingId = params.get('bookingId') || 'STR-2026-48291';
-  const from = params.get('from') || 'Dhaka';
-  const to = params.get('to') || 'Chattogram';
-  const date = params.get('date') || '2026-03-25';
+  const from = params.get('from') || 'Feni';
+  const to = params.get('to') || 'Dhaka';
+  const date = params.get('date') || '2026-04-08';
   const seats = params.get('seats')?.split(',') || ['A1', 'A2'];
-  const fare = params.get('fare') || '3740';
+  const fare = params.get('fare') || '1750';
   const coachName = params.get('coachName') || 'Starline Platinum';
   const dep = params.get('dep') || '22:00';
-  const arr = params.get('arr') || '03:30';
-  const boarding = params.get('boarding') || 'Dhaka Terminal';
-  const dropping = params.get('dropping') || 'Chattogram Terminal';
+  const arr = params.get('arr') || '02:00';
+  const boarding = params.get('boarding') || 'Mohipal Main Counter';
+  const dropping = params.get('dropping') || 'Maniknagar Terminal';
   const name = params.get('name') || 'Rahim Uddin';
   const phone = params.get('phone') || '+8801712345678';
   const payment = params.get('payment') || 'bKash';
+
+  const isCounterPayment = payment === 'counter';
 
   return (
     <div className="min-h-screen bg-background">
@@ -27,12 +29,44 @@ export default function TicketConfirmation() {
       <div className="pt-20 pb-12">
         <div className="container max-w-2xl">
           <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="text-center mb-8">
-            <div className="w-16 h-16 rounded-full bg-success/10 flex items-center justify-center mx-auto mb-4">
-              <CheckCircle2 className="w-8 h-8 text-success" />
+            <div className={`w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4 ${
+              isCounterPayment ? 'bg-warning/10' : 'bg-success/10'
+            }`}>
+              {isCounterPayment ? (
+                <AlertCircle className="w-8 h-8 text-warning" />
+              ) : (
+                <CheckCircle2 className="w-8 h-8 text-success" />
+              )}
             </div>
-            <h1 className="font-display text-3xl font-bold mb-2">Booking Confirmed!</h1>
-            <p className="text-muted-foreground">Your ticket has been booked successfully</p>
+            <h1 className="font-display text-3xl font-bold mb-2">
+              {isCounterPayment ? 'Booking Reserved!' : 'Booking Confirmed!'}
+            </h1>
+            <p className="text-muted-foreground">
+              {isCounterPayment
+                ? 'Your seats are reserved. Pay at the counter before departure.'
+                : 'Your ticket has been booked successfully'}
+            </p>
           </motion.div>
+
+          {/* Status banner for counter payment */}
+          {isCounterPayment && (
+            <motion.div
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="bg-warning/10 border border-warning/20 rounded-xl p-4 mb-6"
+            >
+              <div className="flex items-start gap-3">
+                <Clock className="w-5 h-5 text-warning shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-sm font-semibold text-warning">Payment Required at Counter</p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    Please arrive at {boarding} at least 30 minutes before departure to complete payment. 
+                    Unpaid reservations will be released 15 minutes before departure.
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
 
           <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="glass-card overflow-hidden">
             {/* Header */}
@@ -40,6 +74,15 @@ export default function TicketConfirmation() {
               <div>
                 <div className="text-xs text-muted-foreground mb-1">Booking ID</div>
                 <div className="font-display font-bold text-lg">{bookingId}</div>
+                <div className="flex items-center gap-2 mt-1">
+                  <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${
+                    isCounterPayment
+                      ? 'bg-warning/15 text-warning'
+                      : 'bg-success/15 text-success'
+                  }`}>
+                    {isCounterPayment ? 'Reserved' : 'Confirmed'}
+                  </span>
+                </div>
               </div>
               <div className="w-20 h-20 bg-secondary/80 rounded-xl flex items-center justify-center">
                 <QrCode className="w-12 h-12 text-muted-foreground" />
@@ -81,18 +124,20 @@ export default function TicketConfirmation() {
                   <div className="font-medium">{name}</div>
                 </div>
                 <div className="bg-secondary/50 p-3 rounded-lg">
-                  <div className="text-xs text-muted-foreground mb-1">Boarding</div>
-                  <div className="font-medium">{boarding}</div>
+                  <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1"><MapPin className="w-3 h-3" /> Boarding</div>
+                  <div className="font-medium text-xs">{boarding}</div>
                 </div>
                 <div className="bg-secondary/50 p-3 rounded-lg">
-                  <div className="text-xs text-muted-foreground mb-1">Dropping</div>
-                  <div className="font-medium">{dropping}</div>
+                  <div className="text-xs text-muted-foreground mb-1 flex items-center gap-1"><MapPin className="w-3 h-3" /> Dropping</div>
+                  <div className="font-medium text-xs">{dropping}</div>
                 </div>
               </div>
 
               <div className="bg-accent/10 border border-accent/20 rounded-lg p-4 flex items-center justify-between">
                 <div>
-                  <div className="text-xs text-muted-foreground">Total Paid ({payment})</div>
+                  <div className="text-xs text-muted-foreground">
+                    {isCounterPayment ? 'Amount Due (Pay at Counter)' : `Total Paid (${payment})`}
+                  </div>
                   <div className="font-display font-bold text-xl text-accent">৳{fare}</div>
                 </div>
                 <CreditCard className="w-6 h-6 text-accent" />
@@ -108,6 +153,19 @@ export default function TicketConfirmation() {
                   <li>Max baggage: 2 bags (20kg each) + 1 carry-on</li>
                 </ul>
               </div>
+
+              {/* Next steps */}
+              <div className="bg-primary/5 border border-primary/15 rounded-lg p-4 text-sm">
+                <h4 className="font-semibold text-foreground mb-2">What's next?</h4>
+                <div className="space-y-1.5 text-muted-foreground text-xs">
+                  <p>✓ A confirmation SMS has been sent to {phone}</p>
+                  <p>✓ Download your e-ticket or show the QR at boarding</p>
+                  <p>✓ Track your bus live on departure day from your dashboard</p>
+                  {isCounterPayment && (
+                    <p className="text-warning">⚠ Complete payment at {boarding} before departure</p>
+                  )}
+                </div>
+              </div>
             </div>
           </motion.div>
 
@@ -117,6 +175,9 @@ export default function TicketConfirmation() {
             </button>
             <Link to="/manage-booking" className="flex-1 glass-card px-5 py-3 flex items-center justify-center gap-2 text-sm font-medium hover:bg-card transition-colors">
               <Ticket className="w-4 h-4" /> Manage Booking
+            </Link>
+            <Link to="/live-tracking" className="flex-1 glass-card px-5 py-3 flex items-center justify-center gap-2 text-sm font-medium hover:bg-card transition-colors">
+              <Navigation className="w-4 h-4" /> Track Bus
             </Link>
             <Link to="/support" className="flex-1 glass-card px-5 py-3 flex items-center justify-center gap-2 text-sm font-medium hover:bg-card transition-colors">
               <Headphones className="w-4 h-4" /> Support
