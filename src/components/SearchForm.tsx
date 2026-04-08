@@ -12,14 +12,15 @@ interface Props {
 
 export default function SearchForm({ variant = 'hero', initialFrom = '', initialTo = '', initialDate = '' }: Props) {
   const navigate = useNavigate();
-  const [from, setFrom] = useState(initialFrom || 'Dhaka');
-  const [to, setTo] = useState(initialTo || 'Chattogram');
-  const [date, setDate] = useState(initialDate || '2026-03-25');
+  const [from, setFrom] = useState(initialFrom || 'Feni');
+  const [to, setTo] = useState(initialTo || 'Dhaka');
+  const [date, setDate] = useState(initialDate || '2026-04-08');
   const [passengers, setPassengers] = useState(1);
 
   const swap = () => { setFrom(to); setTo(from); };
 
   const handleSearch = () => {
+    if (from === to) return;
     navigate(`/search?from=${encodeURIComponent(from)}&to=${encodeURIComponent(to)}&date=${date}&passengers=${passengers}`);
   };
 
@@ -58,7 +59,7 @@ export default function SearchForm({ variant = 'hero', initialFrom = '', initial
               onChange={e => setTo(e.target.value)}
               className="w-full bg-secondary text-foreground rounded-lg pl-10 pr-4 py-3 text-sm font-medium appearance-none focus:outline-none focus:ring-2 focus:ring-primary/50"
             >
-              {cities.map(c => <option key={c} value={c}>{c}</option>)}
+              {cities.filter(c => c !== from).map(c => <option key={c} value={c}>{c}</option>)}
             </select>
           </div>
         </div>
@@ -95,12 +96,16 @@ export default function SearchForm({ variant = 'hero', initialFrom = '', initial
         {/* Search */}
         <button
           onClick={handleSearch}
-          className="bg-primary text-primary-foreground rounded-lg px-6 py-3 font-semibold text-sm hover:bg-primary/90 transition-colors btn-primary-glow flex items-center gap-2"
+          disabled={from === to}
+          className="bg-primary text-primary-foreground rounded-lg px-6 py-3 font-semibold text-sm hover:bg-primary/90 transition-colors btn-primary-glow flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
         >
           <Search className="w-4 h-4" />
           Search
         </button>
       </div>
+      {from === to && (
+        <p className="text-xs text-destructive mt-2">Origin and destination cannot be the same</p>
+      )}
     </div>
   );
 }
