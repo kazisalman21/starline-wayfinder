@@ -10,6 +10,7 @@ import Checkout from "./pages/Checkout.tsx";
 import TicketConfirmation from "./pages/TicketConfirmation.tsx";
 import ManageBooking from "./pages/ManageBooking.tsx";
 import LiveTracking from "./pages/LiveTracking.tsx";
+import RouteMap from "./pages/RouteMap.tsx";
 import RoutesFleet from "./pages/RoutesFleet.tsx";
 import Counters from "./pages/Counters.tsx";
 import Support from "./pages/Support.tsx";
@@ -38,6 +39,7 @@ const App = () => (
           <Route path="/ticket" element={<TicketConfirmation />} />
           <Route path="/manage-booking" element={<ManageBooking />} />
           <Route path="/live-tracking" element={<LiveTracking />} />
+          <Route path="/route-map" element={<RouteMap />} />
           <Route path="/routes" element={<RoutesFleet />} />
           <Route path="/counters" element={<Counters />} />
           <Route path="/support" element={<Support />} />
