@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { Menu, X, LayoutDashboard, UserCircle } from 'lucide-react';
+import { Menu, X, LayoutDashboard, UserCircle, ShieldCheck } from 'lucide-react';
 import starlineLogo from '@/assets/starline-logo.png';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -51,6 +51,13 @@ export default function Navbar() {
             My Account
           </Link>
           <Link
+            to="/staff/login"
+            className="px-3 py-2 rounded-lg text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 flex items-center gap-1.5 transition-colors"
+          >
+            <ShieldCheck className="w-3.5 h-3.5" />
+            Staff
+          </Link>
+          <Link
             to="/admin"
             className="px-3 py-2 rounded-lg text-[13px] font-medium text-muted-foreground hover:text-foreground hover:bg-secondary/60 flex items-center gap-1.5 transition-colors"
           >
@@ -75,7 +82,7 @@ export default function Navbar() {
             className="md:hidden bg-background/95 backdrop-blur-2xl border-b border-border overflow-hidden"
           >
             <div className="container py-3 flex flex-col gap-0.5">
-              {[...navLinks, { to: '/dashboard', label: 'My Account' }, { to: '/admin', label: 'Admin Dashboard' }].map(l => (
+              {[...navLinks, { to: '/staff/login', label: 'Staff Portal' }, { to: '/dashboard', label: 'My Account' }, { to: '/admin', label: 'Admin Dashboard' }].map(l => (
                 <Link
                   key={l.to}
                   to={l.to}
