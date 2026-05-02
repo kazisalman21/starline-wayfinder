@@ -22,6 +22,9 @@ import MyComplaints from "./pages/MyComplaints.tsx";
 import TravelUpdates from "./pages/TravelUpdates.tsx";
 import NotFound from "./pages/NotFound.tsx";
 import AIChatWidget from "./components/support/AIChatWidget.tsx";
+import StaffLogin from "./pages/staff/StaffLogin.tsx";
+import StaffTripsToday from "./pages/staff/StaffTripsToday.tsx";
+import StaffTripControl from "./pages/staff/StaffTripControl.tsx";
 
 const queryClient = new QueryClient();
 
@@ -49,6 +52,9 @@ const App = () => (
           <Route path="/my-complaints" element={<MyComplaints />} />
           <Route path="/notices" element={<TravelUpdates />} />
           <Route path="/admin" element={<AdminDashboard />} />
+          <Route path="/staff/login" element={<StaffLogin />} />
+          <Route path="/staff/trips" element={<StaffTripsToday />} />
+          <Route path="/staff/trip/:tripId" element={<StaffTripControl />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
         <AIChatWidget />

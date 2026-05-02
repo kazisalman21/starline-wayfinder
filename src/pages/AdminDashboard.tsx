@@ -6,8 +6,9 @@ import {
   Plus, Pencil, Trash2, Search, Filter, Eye, X, Check, ChevronRight,
   LayoutDashboard, Route, Building2, UserCog, Ticket, Settings, Shield,
   Phone, Mail, Calendar, Fuel, Wrench, Star, Download, MoreVertical, Power,
-  Camera, UserCheck, ClipboardList
+  Camera, UserCheck, ClipboardList, Activity
 } from 'lucide-react';
+import AdminTripsMonitor from '@/components/tripops/AdminTripsMonitor';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 import { adminStats } from '@/data/mockData';
@@ -23,10 +24,11 @@ import SupportAnalyticsTab from '@/components/support/SupportAnalyticsTab';
 import AdminNoticesTab from '@/components/notices/AdminNoticesTab';
 
 // --- Admin Tab Types ---
-type AdminTab = 'overview' | 'fleet' | 'counters' | 'routes' | 'bookings' | 'drivers' | 'notices' | 'complaints' | 'analytics' | 'settings';
+type AdminTab = 'overview' | 'fleet' | 'counters' | 'routes' | 'trips' | 'bookings' | 'drivers' | 'notices' | 'complaints' | 'analytics' | 'settings';
 
 const adminTabs: { id: AdminTab; label: string; icon: typeof LayoutDashboard }[] = [
   { id: 'overview', label: 'Overview', icon: LayoutDashboard },
+  { id: 'trips', label: 'Live Trips', icon: Activity },
   { id: 'fleet', label: 'Fleet', icon: Bus },
   { id: 'counters', label: 'Counters', icon: Building2 },
   { id: 'routes', label: 'Routes', icon: Route },
@@ -151,6 +153,7 @@ export default function AdminDashboard() {
   };
 
   const tabContent: Record<AdminTab, JSX.Element> = {
+    trips: <AdminTripsMonitor />,
     // ============= OVERVIEW =============
     overview: (
       <div className="space-y-6">
