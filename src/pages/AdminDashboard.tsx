@@ -153,6 +153,7 @@ export default function AdminDashboard() {
   };
 
   const tabContent: Record<AdminTab, JSX.Element> = {
+    trips: <AdminTripsMonitor />,
     // ============= OVERVIEW =============
     overview: (
       <div className="space-y-6">
